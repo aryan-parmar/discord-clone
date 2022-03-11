@@ -6,9 +6,10 @@ import axios from 'axios';
 import { login } from './features/userSlice'
 import { useDispatch } from 'react-redux'
 import './login.css'
+import url from "./url.json"
 import AppHome from './components/AppHome'
 import socketIOClient from "socket.io-client"
-var socket = socketIOClient('http://localhost:4000');
+var socket = socketIOClient(url.server);
 function App() {
   let [ShowApp, setShowApp] = useState(false)
   let [loginState, setLoginState] = useState(false)
@@ -26,7 +27,7 @@ function App() {
     const requestOptions = {
       method: 'GET',
       withCredentials: true,
-      url: 'http://localhost:4000/auth/user'
+      url: `${url.server}auth/user`
     };
     axios(requestOptions)
       .then(res => {
@@ -82,9 +83,9 @@ function App() {
       formData.append('password', password)
       axios({
         method: "POST",
-        url: "http://localhost:4000/auth/login",
+        url: `${url.server}auth/login`,
         headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:3000/',
+          'Access-Control-Allow-Origin': url.frontend,
           'Access-Control-Allow-Credentials': 'true',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
@@ -142,13 +143,13 @@ function App() {
       const requestOptions = {
         method: 'POST',
         headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:300',
+          'Access-Control-Allow-Origin': url.frontend,
           'Access-Control-Allow-Credentials': 'true',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email: email, displayName: username, password: password })
       };
-      fetch('http://localhost:4000/auth/register', requestOptions)
+      fetch(`${url.server}auth/register`, requestOptions)
         .then(response => response.json())
         .then(data => {
           if (data.error === null) {

@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app)
-const io = require('socket.io')(server, { cors: { origins: 'http://localhost:3000', credentials: true } })
+const io = require('socket.io')(server, { cors: { origins: 'http://10.194.23.186:3000', credentials: true } })
 const mongo = require('./db')
 const cors = require('cors');
 const passport = require('passport')
@@ -14,7 +14,7 @@ const User = require('./models/user')
 const ServerModel = require('./models/ServerModel')
 const ChannelModel = require('./models/ChannelModel')
 const ChatModel = require('./models/ChatModel')
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
+app.use(cors({ origin: 'http://10.194.23.186:3000', credentials: true }))
 app.options('*', cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
