@@ -1,0 +1,160 @@
+.login-body {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(83, 101, 255);
+}
+.sign-body {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(46, 66, 247);
+}
+.login-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    width: 40vw;
+    min-height: 35vh;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: rgb(54, 54, 54);
+    color : white;
+    border-radius: 5px;
+    padding: 2%;
+}
+.login-container h2{
+    margin:0;
+    margin-bottom:1%;
+}
+.login-container h5{
+    margin:0;
+    margin-bottom:2%;
+    color: grey;
+    font-weight: 400;
+    font-size:1.01em;
+}
+.login-form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+}
+.holder{
+    display: flex;
+    padding:3%;
+    width:90%;
+    margin: 6px 0 ;
+    background-color: rgb(49, 49, 49);
+    border-radius: 5px;
+    align-items: center;
+    border: 1px solid rgb(26, 26, 26);
+}
+.login-username{
+    height: 90%;
+    width: 90%;
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1.01rem;
+}
+.login-email{
+    height: 90%;
+    width: 90%;
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1.01rem;
+}
+.login-password{
+    height: 90%;
+    width: 90%;
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1.01rem;
+}
+.btn{
+    text-decoration: none;
+    color: rgb(189, 189, 189);
+}
+.sign-up{
+    align-self: flex-start;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 2%;
+}
+.sign-up span:hover{
+    color: gray;
+}
+.forgot{
+    align-self: flex-start;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 2%;
+}
+.forgot:hover{
+    color: gray;
+}
+.login{
+    height: 48px;
+    background-color: rgb(123, 113, 255);
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+    width: 97%;
+    cursor: pointer;
+    font-size: 1.01em;
+    margin-bottom: 2%;
+}
+.login:hover{
+    background-color: rgb(107, 98, 231);
+}
+.login-container h4{
+    color: rgb(190, 190, 190);
+    margin: 3% 0;
+    margin-top: 0%;
+    justify-self: center;
+    align-self: center;
+}
+.btn-google{
+    width: 97%;
+    background-color: rgb(32, 32, 32);
+    text-align:center;
+    color: rgb(115, 77, 255);
+    padding: 3% 0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-google h4{
+    margin: 0;
+    margin-left: 10px;
+    color: inherit;
+}
+label{
+    color: grey;
+    font-size: 1.001;
+    font-weight: 600;
+}
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+}
+.sign-up span{
+    color:rgb(83, 101, 255)
+}
