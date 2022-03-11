@@ -229,11 +229,12 @@ app.get('/join/:id', (req, res) => {
 io.on('connection', socket => {
     console.log(socket.client.conn.server.clientsCount)
     io.emit('joined')
-    socket.on('send-msg', (msg, channelId, userId) => {
+    socket.on('send-msg', (msg, channelId, userId,serverId) => {
         console.log(msg, channelId, userId)
         User.findOne({ _id: userId }, (err, user) => {
             if (err) throw err
             socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now])
+            socket.to(serverId).emit('new-msg', [msg, user.displayName, user.image, Date.now])
             let chat = ChatModel.create({ message: msg, channel: channelId, by: userId, senderProfile: user.image })
         })
     })

@@ -100,6 +100,9 @@ export default function AvailableChats(props) {
                 })
             
         })
+        socket.on('new-msg',(a)=>{
+            alert(`${a[1]} says ${a[0]}`)
+        })
     }, [])
     // eslint-disable-next-line
     React.useEffect(() => {

@@ -18,6 +18,7 @@ export default function Chat(props) {
     var socket = props.socket
     let currentChannel = useSelector(selectChannel)
     let currentUser = useSelector(selectUser)
+    let currentServer = useSelector(selectServer)
     let [message, setMessage] = React.useState('')
     let [messageList, setMessageList] = React.useState([])
     let [previousMessageList, setPreviousMessageList] = React.useState([])
@@ -65,7 +66,7 @@ export default function Chat(props) {
     function handleSubmit(e) {
         e.preventDefault()
         console.log(message)
-        socket.emit('send-msg', message, currentChannel.channel.channelId, currentUser.id)
+        socket.emit('send-msg', message, currentChannel.channel.channelId, currentUser.id,currentServer.server.serverId)
         setMessageList(b => [...b, [message, currentUser.name, currentUser.profile]])
         setMessage('')
     }
