@@ -5,6 +5,7 @@ import { selectChannel } from '../features/channelSlice'
 import { selectUser } from '../features/userSlice'
 import { selectServer } from '../features/serverSlice'
 import { useSelector } from 'react-redux'
+import url from "../url.json"
 
 export default function Chat(props) {
     let chatContainer = React.createRef();
@@ -42,13 +43,13 @@ export default function Chat(props) {
         const requestOptions = {
             method: 'POST',
             headers: {
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
+                'Access-Control-Allow-Origin': url.frontend,
                 'Access-Control-Allow-Credentials': 'true',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ channelId: currentChannel.channel.channelId })
         };
-        fetch('http://localhost:4000/api/get/chat', requestOptions)
+        fetch(`${url.server}api/get/chat`, requestOptions)
             .then(response => response.json())
             .then(data => {
                 if (data.error === null) {

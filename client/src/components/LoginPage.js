@@ -7,6 +7,7 @@ import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios';
 import { selectUser, login } from '../store/userSlice'
 import { useSelector, useDispatch} from 'react-redux'
+import url from "../url.json"
 
 
 import '../login.css'
@@ -61,9 +62,9 @@ export default function LoginPage(props) {
             formData.append('password', password)
             axios({
                 method: "POST",
-                url: "http://localhost:3000/login",
+                url: `${url.server}login`,
                 headers: {
-                    'Access-Control-Allow-Origin': 'http://localhost:3001/',
+                    'Access-Control-Allow-Origin': url.frontend,
                     'Access-Control-Allow-Credentials': 'true',
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },

@@ -15,7 +15,7 @@ export default function AppHome(props) {
                 <ServerList user={user} socket={props.socket}/>
                 <AvailableChats user={user} socket={props.socket}/>
                 <Chat user={user} socket={props.socket}/>
-                <ServerMembers user={user}/>
+                <ServerMembers user={user} socket={props.socket}/>
             </div>
         </>
     )

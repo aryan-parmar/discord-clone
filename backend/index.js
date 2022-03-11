@@ -215,7 +215,7 @@ app.get('/join/:id', (req, res) => {
             if (!server.members.includes(userId)){
                 server.members.push(userId)
                 server.save()
-                io.sockets.to(id).emit("hehe")
+                io.sockets.to(id).emit("member-joined",id,userId)
                 res.send('Done boi')
             }
             else{

@@ -6,6 +6,7 @@ import { selectServer } from '../features/serverSlice'
 import { selectUser } from '../features/userSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { setChannel } from '../features/channelSlice'
+import url from "../url.json"
 
 
 export default function AvailableChats(props) {
@@ -18,12 +19,12 @@ export default function AvailableChats(props) {
         if (currentServer.server !== undefined) {
             let name = prompt('Channel Name')
             let textChannel = window.confirm('Create Text Channel ?')
-            fetch('http://localhost:4000/api/register/channel', {
+            fetch(`${url.server}api/register/channel`, {
                 method: "POST",
                 credentials: 'include',
                 withCredentials: true,
                 headers: {
-                    'Access-Control-Allow-Origin': 'http://localhost:3001/',
+                    'Access-Control-Allow-Origin': url.frontend,
                     'Access-Control-Allow-Credentials': 'true',
                     'Content-Type': 'application/json'
                 },
@@ -39,13 +40,12 @@ export default function AvailableChats(props) {
     
     function getChannels() {
         if (currentServer.server.name !== 'loading') {
-            fetch('http://localhost:4000/api/get/channel', {
+            fetch(`${url.server}api/get/channel`, {
                 method: "POST",
-                url: "http://localhost:4000/api/get/channel",
                 credentials: 'include',
                 withCredentials: true,
                 headers: {
-                    'Access-Control-Allow-Origin': 'http://localhost:3001/',
+                    'Access-Control-Allow-Origin': url.frontend,
                     'Access-Control-Allow-Credentials': 'true',
                     'Content-Type': 'application/json'
                 },
@@ -71,13 +71,12 @@ export default function AvailableChats(props) {
     useEffect(() => {
         socket.on('new-channel', (serverId) => {
                 console.log("fek")
-                fetch('http://localhost:4000/api/get/channel', {
+                fetch(`${url.server}api/get/channel`, {
                     method: "POST",
-                    url: "http://localhost:4000/api/get/channel",
                     credentials: 'include',
                     withCredentials: true,
                     headers: {
-                        'Access-Control-Allow-Origin': 'http://localhost:3001/',
+                        'Access-Control-Allow-Origin': url.frontend,
                         'Access-Control-Allow-Credentials': 'true',
                         'Content-Type': 'application/json'
                     },
@@ -107,7 +106,7 @@ export default function AvailableChats(props) {
         getChannels()
     }, [currentServer.server])
     function getLink(){
-        alert(`Your invite link is : http:localhost:4000/join/${currentServer.server.serverId}`)
+        alert(`Your invite link is : ${url.server}join/${currentServer.server.serverId}`)
     }
     return (
         <div className='ac'>

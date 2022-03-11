@@ -5,6 +5,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import {selectUser} from '../features/userSlice'
 import {setServer} from '../features/serverSlice'
 import { useSelector, useDispatch} from 'react-redux'
+import url from "../url.json"
 
 export default function ServerList(props) {
     const dispatch = useDispatch();
@@ -19,13 +20,12 @@ export default function ServerList(props) {
         }))}
     }
     function GetServerList(){
-        fetch('http://localhost:4000/api/get/server', {
+        fetch(`${url.server}api/get/server`, {
             method: "POST",
-            url: "http://localhost:4000/api/get/server",
             credentials: 'include',
             withCredentials: true,
             headers: {
-                'Access-Control-Allow-Origin': 'http://localhost:3001/',
+                'Access-Control-Allow-Origin': url.frontend,
                 'Access-Control-Allow-Credentials': 'true',
                 'Content-Type': 'application/json'
             },
@@ -37,6 +37,14 @@ export default function ServerList(props) {
             setCurrentServer(res.servers[res.servers.length - 1])
         })
     }
+    React.useEffect(()=>{
+        socket.on("member-joined",(id,u)=>{
+            console.log("yo")
+            if (user.id === u){
+                GetServerList()
+            }
+        })
+    })
     useEffect(()=>{
         server.map((s)=>{
             socket.emit("server-connected", s._id);
@@ -45,12 +53,12 @@ export default function ServerList(props) {
     },[server])
     function createServer() {
         let name = prompt('server name')
-        fetch('http://localhost:4000/api/register/server', {
+        fetch(`${url.server}api/register/server`, {
             method: "POST",
             credentials: 'include',
             withCredentials: true,
             headers: {
-                'Access-Control-Allow-Origin': 'http://localhost:3001/',
+                'Access-Control-Allow-Origin': url.frontend,
                 'Access-Control-Allow-Credentials': 'true',
                 'Content-Type': 'application/json'
             },

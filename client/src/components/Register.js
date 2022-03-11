@@ -4,6 +4,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faKey } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
+import url from "../url.json"
 
 export default function Register() {
     var [email, setEmail] = useState('')
@@ -56,13 +57,13 @@ export default function Register() {
             const requestOptions = {
                 method: 'POST',
                 headers: {
-                    'Access-Control-Allow-Origin': 'http://localhost:3001',
+                    'Access-Control-Allow-Origin': url.frontend,
                     'Access-Control-Allow-Credentials': 'true',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ email: email, displayName: username, firstName: username, password: password })
             };
-            fetch('http://localhost:3000/api/register/user', requestOptions)
+            fetch(`${url.server}api/register/user`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error === null) {
