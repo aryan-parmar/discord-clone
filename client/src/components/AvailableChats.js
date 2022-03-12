@@ -222,7 +222,7 @@ export default function AvailableChats(props) {
         <div className='ac'>
             <div className='server-name noselect'><h4>{currentServer.server.serverName}</h4>
 
-                <FontAwesomeIcon icon={faImage} style={{ margin: '6% 7%', marginTop: '7%', cursor: 'pointer' }} className="create-channel" onClick={()=>setServerShow(true)} />
+                {/* <FontAwesomeIcon icon={faImage} style={{ margin: '6% 7%', marginTop: '7%', cursor: 'pointer' }} className="create-channel" onClick={()=>setServerShow(true)} /> */}
                 <FontAwesomeIcon icon={faPlusCircle} style={{ margin: '6% 7%', marginTop: '7%', cursor: 'pointer' }} className="create-channel" onClick={CreateChannel} />
             </div>
             <div className="server-channel-display">
