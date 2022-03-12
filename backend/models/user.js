@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true,
-        default: '/user.jpg'
+        default: 'user.jpg'
     },
     userConfirmed:{
         type: Boolean,

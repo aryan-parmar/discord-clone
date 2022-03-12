@@ -44,6 +44,12 @@ function App() {
         }
       });
   }, [dispatch, loginState])
+  window.addEventListener("dragover",function(e){
+    e.preventDefault();
+  },false);
+  window.addEventListener("drop",function(e){
+    e.preventDefault();
+  },false);
   function urlencodeFormData(fd) {
     var s = '';
     function encode(s) { return encodeURIComponent(s).replace(/%20/g, '+'); }

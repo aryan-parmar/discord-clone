@@ -138,6 +138,18 @@
 
 .circle-btn:hover {
   border-radius: 35%;
+  position: relative;
+}
+
+.circle-btn:hover::after {
+  content: attr(data-name);
+  position: fixed;
+  background-color: #131313;
+  z-index: 2000;
+  left: 70px;
+  color: #FFFFFF;
+  padding: 8px;
+  border-radius: 20px;
 }
 
 .circle-btn img:hover {
@@ -401,6 +413,8 @@
   margin-left: 3%;
   margin-right: 2%;
   cursor: pointer;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .chat .msg {
@@ -451,6 +465,8 @@
   width: 40px;
   border-radius: 50%;
   margin: 0 4%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .member h4 {
@@ -517,10 +533,12 @@
 }
 
 .personal-details img {
-  height: 30px;
-  width: 30px;
+  height: 35px;
+  width: 35px;
   border-radius: 50%;
   margin: 1% 4%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .personal-details .personal-details-text {
@@ -546,5 +564,158 @@
   color: #969696;
   font-weight: 600;
   text-align: left;
+}
+
+.chat-member {
+  -webkit-box-flex: 0.9;
+      -ms-flex: 0.9;
+          flex: 0.9;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.chat-member::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-modal {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+.modal {
+  width: 50rem;
+  height: 29rem;
+  position: fixed;
+  background-color: #23272a;
+  z-index: 12000;
+  top: 50%;
+  right: 50%;
+  -webkit-transform: translate(50%, -50%);
+          transform: translate(50%, -50%);
+  border-radius: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.modal form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.modal form .section1 {
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.modal form .section1 .profile {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  border-radius: 50%;
+}
+
+.modal form .section1 .profile:hover > .ab {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-backdrop-filter: brightness(0.5);
+          backdrop-filter: brightness(0.5);
+}
+
+.modal form .section1 img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  -webkit-transition: border-radius 200ms ease-in-out;
+  transition: border-radius 200ms ease-in-out;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.modal form .section1 .file {
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+  position: absolute;
+}
+
+.modal form .section1 label {
+  color: #7b71ff;
+  font-size: 0.9rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+}
+
+.modal form .section1 .ab {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  border-radius: 50%;
+  display: none;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.modal form .btn-group {
+  margin-bottom: 30px;
+  width: 40%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.modal form .btn-group button, .modal form .btn-group a {
+  margin: 5px;
+}
+
+.modal form .btn-group a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 /*# sourceMappingURL=ServerList.css.map */

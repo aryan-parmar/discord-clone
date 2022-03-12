@@ -2,6 +2,7 @@ import React from 'react'
 import {setServer} from '../features/serverSlice'
 import { selectServer } from '../features/serverSlice'
 import { useSelector, useDispatch} from 'react-redux'
+import url from "../url.json"
 
 export default function SBtn(props) {
     let currentServer = useSelector(selectServer)
@@ -12,13 +13,14 @@ export default function SBtn(props) {
     function setCurrentServer(name, id) {
         dispatch(setServer({
             serverName:name,
-            serverId: id
+            serverId: id,
+            serverProfile: profile
         }))
     }
     return (
         <>
             <div onClick={()=>{setCurrentServer(name, id)}}>
-                <div className={id===currentServer.server.serverId ?'active-server circle-btn square-btn': 'circle-btn'}><img src={profile} alt={name} className="server-image" /></div>
+                <div className={id===currentServer.server.serverId ?'active-server circle-btn square-btn': 'circle-btn'} data-name={name}><img src={url.server+profile} alt={name} className="server-image" /></div>
             </div>
         </>
     )

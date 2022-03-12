@@ -1,4 +1,4 @@
 {
-    "server": "http://10.194.20.164:4000",
-    "frontend": "http://10.194.20.164:3000"
+    "server": "http://localhost:4000",
+    "frontend": "http://localhost:3000"
 }

@@ -10,6 +10,7 @@ const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const bcrypt = require('bcrypt')
 const session = require('express-session')
+const fileUpload = require('express-fileupload')
 var morgan = require('morgan')
 mongo()
 const User = require('./models/user')
@@ -25,6 +26,8 @@ app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(morgan('dev'))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(fileUpload({}));
+app.use(express.static('usercontent'))
 require('./passportConfig')(passport)
 function handleValidation(a) {
     let email = a.email
@@ -195,12 +198,74 @@ app.post('/api/get/chat', async (req, res) => {
         let chats = await ChatModel.find({ channel: id })
         for (var i = 0; i < chats.length; i++) {
             let user = await User.findOne({ _id: chats[i].by })
+            chats[i]["senderProfile"] = user.image
             chats[i].by = user.displayName
-
         }
         res.send({ error: null, chat: chats })
     } else {
         res.send({ error: 'not authenticated' }).status(401)
+    }
+})
+app.post('/update/userdata', async (req, res) => {
+    if (req.isAuthenticated) {
+        console.log(req.files)
+        const fname = req.files.image
+        var path;
+        if(fname.mimetype === "image/jpeg") path = 'profile/' + req.user.id +".jpg";
+        if(fname.mimetype === "image/png") path = 'profile/' + req.user.id +".png";
+        if(fname.mimetype === "image/gif") path = 'profile/' + req.user.id +".gif";
+        fname.mv(__dirname+ "/usercontent/"+ path, async(error) => {
+            if (error) {
+                console.error(error)
+                res.writeHead(500, {
+                    'Content-Type': 'application/json'
+                })
+                res.end(JSON.stringify({ status: 'error', message: error }))
+                return
+            }
+            else{
+                await User.findOne({ _id:  req.user.id}, (err, user) => {
+                    if (err) throw err
+                    user.image = path;
+                    user.save()
+                }).catch(err => { throw err })
+            }
+            res.writeHead(200, {
+                'Content-Type': 'application/json'
+            })
+            res.end(JSON.stringify({ status: 'Uploaded' }))
+        })
+    }
+})
+app.post('/update/server', async (req, res) => {
+    if (req.isAuthenticated) {
+        console.log(req.files)
+        // const fname = req.files.image
+        // var path;
+        // if(fname.mimetype === "image/jpeg") path = '/profile/' + req.user.id +".jpg";
+        // if(fname.mimetype === "image/png") path = '/profile/' + req.user.id +".png";
+        // if(fname.mimetype === "image/gif") path = '/profile/' + req.user.id +".gif";
+        // fname.mv(__dirname+ "/usercontent"+ path, async(error) => {
+        //     if (error) {
+        //         console.error(error)
+        //         res.writeHead(500, {
+        //             'Content-Type': 'application/json'
+        //         })
+        //         res.end(JSON.stringify({ status: 'error', message: error }))
+        //         return
+        //     }
+        //     else{
+        //         await User.findOne({ _id:  req.user.id}, (err, user) => {
+        //             if (err) throw err
+        //             user.image = path;
+        //             user.save()
+        //         }).catch(err => { throw err })
+        //     }
+        //     res.writeHead(200, {
+        //         'Content-Type': 'application/json'
+        //     })
+        //     res.end(JSON.stringify({ status: 'Uploaded' }))
+        // })
     }
 })
 app.get('/join/:id', (req, res) => {
@@ -214,13 +279,13 @@ app.get('/join/:id', (req, res) => {
             }
         })
         ServerModel.findOne({ _id: id }, (err, server) => {
-            if (!server.members.includes(userId)){
+            if (!server.members.includes(userId)) {
                 server.members.push(userId)
                 server.save()
-                io.sockets.to(id).emit("member-joined",id,userId)
+                io.sockets.to(id).emit("member-joined", id, userId)
                 res.send('Done boi')
             }
-            else{
+            else {
                 res.send('Already in!')
             }
         })
@@ -231,13 +296,13 @@ app.get('/join/:id', (req, res) => {
 io.on('connection', socket => {
     console.log(socket.client.conn.server.clientsCount)
     io.emit('joined')
-    socket.on('send-msg', (msg, channelId, userId,serverId) => {
+    socket.on('send-msg', (msg, channelId, userId, serverId) => {
         console.log(msg, channelId, userId)
         User.findOne({ _id: userId }, (err, user) => {
             if (err) throw err
             socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now])
             socket.to(serverId).emit('new-msg', [msg, user.displayName, user.image, Date.now])
-            let chat = ChatModel.create({ message: msg, channel: channelId, by: userId, senderProfile: user.image })
+            let chat = ChatModel.create({ message: msg, channel: channelId, by: userId})
         })
     })
     socket.on('join-room', channelId => {
@@ -248,7 +313,7 @@ io.on('connection', socket => {
         socket.join(server)
         console.log(server)
     })
-    socket.on('channel-created', serverId =>{
+    socket.on('channel-created', serverId => {
         console.log(serverId)
         socket.to(serverId).emit('new-channel', serverId)
     })

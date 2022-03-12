@@ -8,7 +8,7 @@ const ServerSchema = new mongoose.Schema({
     ServerProfile: {
         type: String,
         required: false,
-        default: '/server.jpg'
+        default: 'server.jpg'
     },
     admin:{
         type: Array,

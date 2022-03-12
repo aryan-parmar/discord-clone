@@ -16,7 +16,8 @@ export default function ServerList(props) {
         if(s !== undefined){
         dispatch(setServer({
             serverName:s.serverName,
-            serverId: s._id
+            serverId: s._id,
+            serverProfile: s.ServerProfile
         }))}
     }
     function GetServerList(){
@@ -80,7 +81,7 @@ export default function ServerList(props) {
                     <SBtn key={servers._id} uid={servers._id} profile={servers.ServerProfile} name={servers.serverName}></SBtn>
                 ))}
                 <div onClick={createServer}>
-                    <div className='circle-btn'><FontAwesomeIcon icon={faPlus} color="green" /></div>
+                    <div className='circle-btn' data-name="Create new server"><FontAwesomeIcon icon={faPlus} color="green" /></div>
                 </div>
             </div>
         </>

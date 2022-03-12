@@ -5,6 +5,7 @@ export const serverSlice = createSlice({
     initialState: {
         serverName: null,
         serverId: null,
+        serverProfile:null,
         server: {name:'loading'}
     },
     reducers: {

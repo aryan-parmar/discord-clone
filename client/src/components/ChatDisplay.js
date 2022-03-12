@@ -1,4 +1,5 @@
 import React from 'react'
+import url from '../url.json'
 
 export default function ChatDisplay(props) {
     let name = props.from
@@ -6,7 +7,7 @@ export default function ChatDisplay(props) {
     let date = props.date
     return (
         <div className="chat">
-            <img src={profileImage} alt='profile' />
+            <img src={url.server + profileImage} alt='profile' />
             <div className="msg">
                 <h4>{name} <span className="noselect">{date}</span></h4>
                 <h5>{props.msg}</h5>

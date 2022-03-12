@@ -36,9 +36,6 @@ export default function Chat(props) {
         if (response[3] === currentChannel.channel.channelId) {
             setMessageList(b => [...b, response])
         }
-        else if(response.length!==0){
-            alert('new message')
-        }
     },[response])
     useEffect(() => {
         const requestOptions = {
