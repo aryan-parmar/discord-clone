@@ -301,9 +301,9 @@ io.on('connection', socket => {
         console.log(msg, channelId, userId)
         User.findOne({ _id: userId }, (err, user) => {
             if (err) throw err
-            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now()])
+            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now(),userId])
             socket.to(serverId).emit('new-msg', [msg, user.displayName, user.image, Date.now(), channelId, userId])
-            let chat = ChatModel.create({ message: msg, channel: channelId, by: userId })
+            let chat = ChatModel.create({ message: msg, channel: channelId, senderId: userId, by: userId })
         })
     })
     socket.on('authenticate', (cookie) => {

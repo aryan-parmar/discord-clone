@@ -23,9 +23,9 @@ export default function Chat(props) {
     let [messageList, setMessageList] = React.useState([])
     let [previousMessageList, setPreviousMessageList] = React.useState([])
     let user = props.user
-    let [response, setResponse] = React.useState([]) 
+    let [response, setResponse] = React.useState([])
     useEffect(() => {
-        socket.on('msg', (a) => {setResponse(a)})
+        socket.on('msg', (a) => { setResponse(a) })
         socket.on('joined', () => { console.log('you joined') });
         socket.on('user-connected', () => { console.log("user-connected") })
     }, [])
@@ -33,7 +33,7 @@ export default function Chat(props) {
         if (response[3] === currentChannel.channel.channelId) {
             setMessageList(b => [...b, response])
         }
-    },[response])
+    }, [response])
     useEffect(() => {
         const requestOptions = {
             method: 'POST',
@@ -52,15 +52,15 @@ export default function Chat(props) {
                     setPreviousMessageList(data.chat);
                 }
             });
-            socket.emit('join-room', currentChannel.channel.channelId)
+        socket.emit('join-room', currentChannel.channel.channelId)
     }, [currentChannel.channel])
     useEffect(() => {
         scrollToMyRef()
     }, [messageList, previousMessageList])
     function handleSubmit(e) {
         e.preventDefault()
-        socket.emit('send-msg', message, currentChannel.channel.channelId, currentUser.id,currentServer.server.serverId)
-        setMessageList(b => [...b, [message, currentUser.name, currentUser.profile,currentChannel.channel.channelId, Date.now()]])
+        socket.emit('send-msg', message, currentChannel.channel.channelId, currentUser.id, currentServer.server.serverId)
+        setMessageList(b => [...b, [message, currentUser.name, currentUser.profile, currentChannel.channel.channelId, Date.now()]])
         setMessage('')
     }
 
@@ -69,11 +69,26 @@ export default function Chat(props) {
             <div className='chat-header noselect'><h2>#</h2> <h4>{currentChannel.channel.channelName}</h4></div>
             <div className='chat-display' ref={chatContainer}>
 
-                {previousMessageList.map(message => (
-                    <ChatDisplay key={message._id} from={message.by} profileImage={message.senderProfile} date={message.time} msg={message.message}></ChatDisplay>
+                {previousMessageList.map((message, ind) => (
+                    <ChatDisplay 
+                        lastmessage={ind === 0 ? 0 : {id:previousMessageList[ind - 1]["senderId"], date:previousMessageList[ind - 1]['time']}}
+                        key={message._id}
+                        from={message.by}
+                        profileImage={message.senderProfile}
+                        date={message.time}
+                        msg={message.message}
+                        current={message["senderId"]}
+                    ></ChatDisplay>
                 ))}
-                {messageList.map((message,ind )=> (
-                    <ChatDisplay key={ind} from={message[1]} profileImage={message[2]} date={message[4]} msg={message[0]}></ChatDisplay>
+                {messageList.map((message, ind) => (
+                    <ChatDisplay
+                        lastmessage={ind === 0 ? previousMessageList[previousMessageList - 1] ? {id:previousMessageList[previousMessageList - 1]["senderId"],date: previousMessageList[previousMessageList - 1]['time']} : {id:0,date:""} : {id:messageList[ind - 1][5],date:messageList[ind - 1][4]}}
+                        key={ind} from={message[1]}
+                        profileImage={message[2]}
+                        date={message[4]}
+                        msg={message[0]}
+                        current={message[5]}
+                    ></ChatDisplay>
                 ))}
             </div>
             <div className='chat-input'>

@@ -402,24 +402,32 @@
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
-  margin: 1% 0;
+  margin-top: 1%;
 }
 
 .chat:hover {
   background-color: #31363a;
 }
 
+.start {
+  margin-top: 2%;
+}
+
 .chat img {
   height: 40px;
   width: 40px;
   border-radius: 50%;
-  margin-bottom: 2%;
-  margin-top: 1%;
   margin-left: 3%;
   margin-right: 2%;
   cursor: pointer;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.chat .spacer {
+  width: 40px;
+  margin-left: 3%;
+  margin-right: 2%;
 }
 
 .chat .msg {

@@ -15,6 +15,9 @@ const ChatSchema = new mongoose.Schema({
     },
     by: {
         type: String,
+    },
+    senderId: {
+        type: String,
         required: true,
     },
     senderProfile:{
