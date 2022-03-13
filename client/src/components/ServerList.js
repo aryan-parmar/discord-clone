@@ -20,6 +20,9 @@ export default function ServerList(props) {
             serverProfile: s.ServerProfile
         }))}
     }
+    useEffect(()=>{
+        socket.emit("authenticate", user.id)
+    },[])
     function GetServerList(){
         fetch(`${url.server}api/get/server`, {
             method: "POST",

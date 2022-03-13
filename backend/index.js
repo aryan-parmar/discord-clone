@@ -211,10 +211,10 @@ app.post('/update/userdata', async (req, res) => {
         console.log(req.files)
         const fname = req.files.image
         var path;
-        if(fname.mimetype === "image/jpeg") path = 'profile/' + req.user.id +".jpg";
-        if(fname.mimetype === "image/png") path = 'profile/' + req.user.id +".png";
-        if(fname.mimetype === "image/gif") path = 'profile/' + req.user.id +".gif";
-        fname.mv(__dirname+ "/usercontent/"+ path, async(error) => {
+        if (fname.mimetype === "image/jpeg") path = 'profile/' + req.user.id + ".jpg";
+        if (fname.mimetype === "image/png") path = 'profile/' + req.user.id + ".png";
+        if (fname.mimetype === "image/gif") path = 'profile/' + req.user.id + ".gif";
+        fname.mv(__dirname + "/usercontent/" + path, async (error) => {
             if (error) {
                 console.error(error)
                 res.writeHead(500, {
@@ -223,8 +223,8 @@ app.post('/update/userdata', async (req, res) => {
                 res.end(JSON.stringify({ status: 'error', message: error }))
                 return
             }
-            else{
-                await User.findOne({ _id:  req.user.id}, (err, user) => {
+            else {
+                await User.findOne({ _id: req.user.id }, (err, user) => {
                     if (err) throw err
                     user.image = path;
                     user.save()
@@ -243,10 +243,10 @@ app.post('/update/server', async (req, res) => {
         const fname = req.files.image
         const serverId = req.body.serverId
         var path;
-        if(fname.mimetype === "image/jpeg") path = 'serverProfile/' + serverId +".jpg";
-        if(fname.mimetype === "image/png") path = 'serverProfile/' + serverId +".png";
-        if(fname.mimetype === "image/gif") path = 'serverProfile/' + serverId +".gif";
-        fname.mv(__dirname+ "/usercontent/"+ path, async(error) => {
+        if (fname.mimetype === "image/jpeg") path = 'serverProfile/' + serverId + ".jpg";
+        if (fname.mimetype === "image/png") path = 'serverProfile/' + serverId + ".png";
+        if (fname.mimetype === "image/gif") path = 'serverProfile/' + serverId + ".gif";
+        fname.mv(__dirname + "/usercontent/" + path, async (error) => {
             if (error) {
                 console.error(error)
                 res.writeHead(500, {
@@ -255,8 +255,8 @@ app.post('/update/server', async (req, res) => {
                 res.end(JSON.stringify({ status: 'error', message: error }))
                 return
             }
-            else{
-                await ServerModel.findOne({ _id:  serverId}, (err, server) => {
+            else {
+                await ServerModel.findOne({ _id: serverId }, (err, server) => {
                     if (err) throw err
                     server.ServerProfile = path;
                     server.save()
@@ -301,10 +301,13 @@ io.on('connection', socket => {
         console.log(msg, channelId, userId)
         User.findOne({ _id: userId }, (err, user) => {
             if (err) throw err
-            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId,Date.now()])
-            socket.to(serverId).emit('new-msg', [msg, user.displayName, user.image, Date.now(),channelId,userId])
-            let chat = ChatModel.create({ message: msg, channel: channelId, by: userId})
+            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now()])
+            socket.to(serverId).emit('new-msg', [msg, user.displayName, user.image, Date.now(), channelId, userId])
+            let chat = ChatModel.create({ message: msg, channel: channelId, by: userId })
         })
+    })
+    socket.on('authenticate', (cookie) => {
+        console.log("authenticate"+ cookie)
     })
     socket.on('join-room', channelId => {
         socket.join(channelId)

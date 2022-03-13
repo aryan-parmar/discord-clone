@@ -134,6 +134,8 @@
   cursor: pointer;
   -webkit-transition: border-radius 0.3s;
   transition: border-radius 0.3s;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .circle-btn:hover {

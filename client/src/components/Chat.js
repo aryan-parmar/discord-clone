@@ -25,12 +25,9 @@ export default function Chat(props) {
     let user = props.user
     let [response, setResponse] = React.useState([]) 
     useEffect(() => {
-        socket.on('msg', (a) => {
-            setResponse(a)
-        })
+        socket.on('msg', (a) => {setResponse(a)})
         socket.on('joined', () => { console.log('you joined') });
         socket.on('user-connected', () => { console.log("user-connected") })
-        socket.on('hehe', () => { console.log("hehe") })
     }, [])
     useEffect(() => {
         if (response[3] === currentChannel.channel.channelId) {
