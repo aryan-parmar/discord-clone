@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faUserPlus , faImage} from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle, faUserPlus, faImage } from '@fortawesome/free-solid-svg-icons'
 import CategoryButton from './CategoryButton'
 import { selectServer } from '../features/serverSlice'
 import { selectUser } from '../features/userSlice'
@@ -102,8 +102,15 @@ export default function AvailableChats(props) {
             })
 
         })
+        Notification.requestPermission();
         socket.on('new-msg', (a) => {
-            alert(`${a[1]} says "${a[0]}"`)
+            if (a[5] !== currentUser.id) {
+                if (!("Notification" in window)) {
+                    console.log("This browser does not support desktop notification");
+                } else {
+                    var notification = new Notification("new message", { body: a[1] + '" : "' + a[0] + '"', icon: url.server + a[2], tag: a[4] })
+                }
+            }
         })
     }, [])
     // eslint-disable-next-line
@@ -114,78 +121,46 @@ export default function AvailableChats(props) {
         alert(`Your invite link is : ${url.server}join/${currentServer.server.serverId}`)
     }
     function handleSubmit(e) {
-        //     e.preventDefault()
-        //     console.log()
-        //     const data = new FormData();
-        //     data.append(e.target.file.files[0].name, e.target.file.files[0])
-        //     fetch(`${url.server}update/userdata`, {
-        //         method: "POST",
-        //         credentials: 'include',
-        //         withCredentials: true,
-        //         headers: {
-        //             'Access-Control-Allow-Origin': url.frontend,
-        //             'Access-Control-Allow-Credentials': 'true',
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({
-        //             file: {
-        //                 blob: URL.createObjectURL(e.target.file.files[0]),
-        //                 name: e.target.file.files[0].name,
-        //                 size: e.target.file.files[0].size,
-        //                 lastModified: e.target.file.files[0].lastModified
-        //             }
-        //         })
-        //     }).then(response => response.json()).then(res => {
-        //         if (res.error === null) {
-        //             setAvailableChannels(res.channels)
-        //             if (res.channels.length !== 0) {
-        //                 res.channels.some((value, index, arr) => {
-        //                     if (value.channelType === 'text') {
-        //                         dispatch(setChannel({
-        //                             channelName: value.channelName,
-        //                             channelId: value._id
-        //                         }))
-        //                     }
-        //                     return value.channelType === 'text'
-        //                 })
-        //             }
-        //         }
-        //     })
-        // }
         e.preventDefault()
         if (e.target.file.files[0]) {
-            var data = new FormData();
-            data.append("image", e.target.file.files[0])
-            fetch(`${url.server}update/userdata`, {
-                method: "POST",
-                credentials: 'include',
-                withCredentials: true,
-                headers: {
-                    'Access-Control-Allow-Origin': url.frontend,
-                    'Access-Control-Allow-Credentials': 'true',
-                    // 'Content-Type': 'multipart/form-data'
-                    // 'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: data
-            });
-        }
-    }
-    function handleSubmitServer(e) {
-        e.preventDefault()
-        if (e.target.file.files[0]) {
-            var data = new FormData();
-            data.append("image", e.target.file.files[0])
-            data.append("serverId", currentServer.server.serverId)
-            fetch(`${url.server}update/server`, {
-                method: "POST",
-                credentials: 'include',
-                withCredentials: true,
-                headers: {
-                    'Access-Control-Allow-Origin': url.frontend,
-                    'Access-Control-Allow-Credentials': 'true',
-                },
-                body: data
-            });
+            if (show) {
+                var data = new FormData();
+                data.append("image", e.target.file.files[0])
+                fetch(`${url.server}update/userdata`, {
+                    method: "POST",
+                    credentials: 'include',
+                    withCredentials: true,
+                    headers: {
+                        'Access-Control-Allow-Origin': url.frontend,
+                        'Access-Control-Allow-Credentials': 'true',
+                        // 'Content-Type': 'multipart/form-data'
+                        // 'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: data
+                }).then(response => response.json()).then(res => {
+                    if (res.status === "Uploaded") {
+                        setShow(false)
+                    }
+                });
+            } else if (serverShow) {
+                var data = new FormData();
+                data.append("image", e.target.file.files[0])
+                data.append("serverId", currentServer.server.serverId)
+                fetch(`${url.server}update/server`, {
+                    method: "POST",
+                    credentials: 'include',
+                    withCredentials: true,
+                    headers: {
+                        'Access-Control-Allow-Origin': url.frontend,
+                        'Access-Control-Allow-Credentials': 'true',
+                    },
+                    body: data
+                }).then(response => response.json()).then(res => {
+                    if (res.status === "Uploaded") {
+                        setServerShow(false)
+                    }
+                });
+            }
         }
     }
     function changepreview(e) {
@@ -202,28 +177,12 @@ export default function AvailableChats(props) {
             document.querySelector(".preview").src = URL.createObjectURL(files[0])
         }
     };
-    function changepreview2(e) {
-        console.log(e.target.files[0])
-        if (e.target.files[0]) {
-            document.querySelector(".preview2").src = URL.createObjectURL(e.target.files[0])
-        }
-    }
-    const handleDrop2 = (e) => {
-        e.preventDefault();
-        e.dataTransfer.effectAllowed = 'move';
-        let files = e.dataTransfer.files;
-        if (files[0].type === "image/jpeg" || files[0].type === "image/png" || files[0].type === "image/gif") {
-            document.querySelector("#file2").files = files
-            document.querySelector(".preview2").src = URL.createObjectURL(files[0])
-        }
-    };
-
     return (
         <div className='ac'>
             <div className='server-name noselect'><h4>{currentServer.server.serverName}</h4>
 
-                {/* <FontAwesomeIcon icon={faImage} style={{ margin: '6% 7%', marginTop: '7%', cursor: 'pointer' }} className="create-channel" onClick={()=>setServerShow(true)} /> */}
-                <FontAwesomeIcon icon={faPlusCircle} style={{ margin: '6% 7%', marginTop: '7%', cursor: 'pointer' }} className="create-channel" onClick={CreateChannel} />
+                <FontAwesomeIcon icon={faImage} style={{ margin: '6% 1%', marginTop: '7%', cursor: 'pointer' }} className="create-channel" onClick={() => setServerShow(true)} />
+                <FontAwesomeIcon icon={faPlusCircle} style={{ margin: '6% 6%', marginTop: '7%', cursor: 'pointer' }} className="create-channel" onClick={CreateChannel} />
             </div>
             <div className="server-channel-display">
                 <div style={{ backgroundColor: 'rgb(50, 56, 59)', width: '95%', color: 'white', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'sticky', top: '5px', zIndex: '50' }}
@@ -243,29 +202,30 @@ export default function AvailableChats(props) {
                     <h5>{`#${currentUser.id.substr(1, 4)}`}</h5>
                 </div>
             </div>
-
-            <div className={show ? "modal" : "hide-modal"}>
-                <form onSubmit={(e) => handleSubmit(e)} >
-                    <div className='section1' onDrop={(event) => handleDrop(event)}
-                        onDragOver={(e) => { e.preventDefault(); e.dataTransfer.effectAllowed = 'move'; }}
-                        onDragEnter={(e) => e.preventDefault()}>
-                        <span className="profile" onDrop={(event) => handleDrop(event)}
-                            onDragOver={(e) => e.preventDefault()}
+            {show || serverShow ?
+                <div className="modal">
+                    <form onSubmit={(e) => handleSubmit(e)} >
+                        <div className='section1' onDrop={(event) => handleDrop(event)}
+                            onDragOver={(e) => { e.preventDefault(); e.dataTransfer.effectAllowed = 'move'; }}
                             onDragEnter={(e) => e.preventDefault()}>
-                            <img src={url.server + currentUser.profile} className="preview" onDrop={(event) => handleDrop(event)}
+                            <span className="profile" onDrop={(event) => handleDrop(event)}
                                 onDragOver={(e) => e.preventDefault()}
-                                onDragEnter={(e) => e.preventDefault()} />
-                            <input type="file" id="file" name="file" className="file ab" accept=".gif, .jpeg, .gif, .jpg" onChange={(e) => changepreview(e)} />
-                            <label htmlFor="file" className="ab">change Profile picture</label>
-                            <h5>Drag and drop works</h5>
-                        </span>
-                    </div>
-                    <div className="btn-group">
-                        <a className='btn login noselect' onClick={() => setShow(false)}>CANCEL</a>
-                        <button className='btn login noselect' onClick={() => setShow(false)} type="submit">SAVE</button>
-                    </div>
-                </form>
-            </div>
+                                onDragEnter={(e) => e.preventDefault()}>
+                                <img src={show ? url.server + currentUser.profile : url.server + currentServer.server.serverProfile} className="preview" onDrop={(event) => handleDrop(event)}
+                                    onDragOver={(e) => e.preventDefault()}
+                                    onDragEnter={(e) => e.preventDefault()} />
+                                <input type="file" id="file" name="file" className="file ab" accept=".gif, .jpeg, .gif, .jpg" onChange={(e) => changepreview(e)} />
+                                <label htmlFor="file" className="ab">change Profile picture</label>
+                                <h5>Drag and drop works</h5>
+                            </span>
+                        </div>
+                        <div className="btn-group">
+                            <button className='btn login noselect' type="button" onClick={(e) => { e.preventDefault(); setShow(false); setServerShow(false) }}>CANCEL</button>
+                            <button className='btn login noselect' type="submit">SAVE</button>
+                        </div>
+                    </form>
+                </div>
+                : ""}
             {/* <div className={serverShow ? "modal" : "hide-modal"}>
                 <form onSubmit={(e) => handleSubmitServer(e)} >
                     <div className='section1' onDrop={(event) => handleDrop2(event)}

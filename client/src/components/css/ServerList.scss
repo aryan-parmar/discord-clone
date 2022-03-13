@@ -120,6 +120,7 @@
     -o-transform: scale(1, 1.01);
     transform: scale(1, 1.01);
     text-align: left;
+    flex: 1;
 }
 .server-name:hover{
     background-color: rgb(50, 56, 59)
@@ -316,6 +317,9 @@
 }
 .active-server{
     border-radius: 35%;
+    img{
+        border-radius: 35%;
+    }
 }
 .square-btn{
     -moz-box-shadow: -50px 0px 0px 0px #FFFFFF;

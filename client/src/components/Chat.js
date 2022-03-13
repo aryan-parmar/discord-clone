@@ -62,9 +62,8 @@ export default function Chat(props) {
     }, [messageList, previousMessageList])
     function handleSubmit(e) {
         e.preventDefault()
-        console.log(message)
         socket.emit('send-msg', message, currentChannel.channel.channelId, currentUser.id,currentServer.server.serverId)
-        setMessageList(b => [...b, [message, currentUser.name, currentUser.profile]])
+        setMessageList(b => [...b, [message, currentUser.name, currentUser.profile,currentChannel.channel.channelId, Date.now()]])
         setMessage('')
     }
 

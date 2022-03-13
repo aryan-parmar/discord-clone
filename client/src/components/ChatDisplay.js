@@ -9,7 +9,7 @@ export default function ChatDisplay(props) {
         <div className="chat">
             <img src={url.server + profileImage} alt='profile' />
             <div className="msg">
-                <h4>{name} <span className="noselect">{date}</span></h4>
+                <h4>{name} <span className="noselect">{new Date(date).toLocaleDateString()}</span></h4>
                 <h5>{props.msg}</h5>
             </div>
         </div>
