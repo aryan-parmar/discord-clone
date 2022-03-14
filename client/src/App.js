@@ -27,7 +27,12 @@ function App() {
     const requestOptions = {
       method: 'GET',
       withCredentials: true,
-      url: `${url.server}auth/user`
+      headers: {
+        'Access-Control-Allow-Origin': url.frontend,
+        'Access-Control-Allow-Credentials': 'true',
+        'Content-Type': 'application/json'
+      },
+      url: `${url.server}auth/user`,
     };
     axios(requestOptions)
       .then(res => {
@@ -44,12 +49,12 @@ function App() {
         }
       });
   }, [dispatch, loginState])
-  window.addEventListener("dragover",function(e){
+  window.addEventListener("dragover", function (e) {
     e.preventDefault();
-  },false);
-  window.addEventListener("drop",function(e){
+  }, false);
+  window.addEventListener("drop", function (e) {
     e.preventDefault();
-  },false);
+  }, false);
   function urlencodeFormData(fd) {
     var s = '';
     function encode(s) { return encodeURIComponent(s).replace(/%20/g, '+'); }
