@@ -192,7 +192,7 @@ export default function AvailableChats(props) {
                     <FontAwesomeIcon icon={faUserPlus} style={{ margin: 0, marginTop: '6%', marginBottom: '6%' }} />
                 </div>
                 {AvailableChannels.map(channels => (
-                    <CategoryButton key={channels._id} type={channels.channelType} name={channels.channelName} uid={channels._id}></CategoryButton>
+                    <CategoryButton key={channels._id} type={channels.channelType} socket={socket} name={channels.channelName} uid={channels._id}></CategoryButton>
                 ))}
             </div>
             <div className="personal-details">

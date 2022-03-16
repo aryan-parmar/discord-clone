@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 import { selectChannel, setChannel } from '../features/channelSlice'
 import { useSelector, useDispatch} from 'react-redux'
-
+// import Peer from 'peerjs';
+// import url from "../url.json"
 export default function CategoryButton(props) {
     let currentChannel = useSelector(selectChannel)
     const dispatch = useDispatch();
