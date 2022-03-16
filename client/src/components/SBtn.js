@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {setServer} from '../features/serverSlice'
 import { selectServer } from '../features/serverSlice'
 import { useSelector, useDispatch} from 'react-redux'

@@ -367,6 +367,7 @@
     }
     .personal-details-text {
         display: flex;
+        flex: 1;
         flex-direction: column;
         h4{
             margin:0;
