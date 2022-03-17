@@ -40,11 +40,19 @@ git clone https://github.com/aary114/discord-clone.git
 ## Usage
 
 Run
+starting backend server
 ```sh
 cd backend
 npm i
 node index.js
 ```
+starting peerjs server
+```sh
+cd backend
+npm i -g peer
+peerjs --port 3001
+```
+starting frontend app in production mode
 ```sh
 cd client
 npm i
