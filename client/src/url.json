@@ -1,4 +1,5 @@
 {
-    "server": "http://10.194.0.188:4000/",
-    "frontend": "http://10.194.0.188:3000/"
+    "peerHost": "localhost",
+    "server": "http://localhost:4000/",
+    "frontend": "http://localhost:3000/"
 }
