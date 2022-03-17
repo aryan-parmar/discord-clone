@@ -27,11 +27,11 @@ export default function CategoryButton(props) {
         video.addEventListener('loadedmetadata', () => {
             video.play()
         })
-        document.querySelector(".chat-display").appendChild(video)
+        // document.querySelector(".chat-display").appendChild(video)
     }
     React.useEffect(() => {
         let peer = new Peer(undefined, {
-            host: "10.194.8.66",
+            host: url.peerHost,
             port: "3001",
             debug: 3,
             config: {
