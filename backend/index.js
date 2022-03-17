@@ -11,17 +11,12 @@ const cookieParser = require('cookie-parser')
 const bcrypt = require('bcrypt')
 const session = require('express-session')
 const fileUpload = require('express-fileupload')
-var ExpressPeerServer = require('peer').ExpressPeerServer;
-
 var morgan = require('morgan')
 mongo()
 const User = require('./models/user')
 const ServerModel = require('./models/ServerModel')
 const ChannelModel = require('./models/ChannelModel')
 const ChatModel = require('./models/ChatModel')
-var options = {
-    debug: true
-}
 app.use(cors({ origin: url.frontend, credentials: true }))
 app.options('*', cors())
 app.use(express.json())
@@ -33,7 +28,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(fileUpload({}));
 app.use(express.static('usercontent'))
-app.use('/peerjs', ExpressPeerServer(server, options));
 require('./passportConfig')(passport)
 function handleValidation(a) {
     let email = a.email
@@ -326,6 +320,11 @@ io.on('connection', socket => {
     socket.on('channel-created', serverId => {
         console.log(serverId)
         socket.to(serverId).emit('new-channel', serverId)
+    })
+    socket.on('voice-chat-join',(channelId,userId)=>{
+        console.log(channelId, userId)
+        socket.join(channelId)
+        socket.to(channelId).emit('voice-chat-new-user',channelId, userId)
     })
 })
 server.listen(4000, (console.log('Server Started')))
