@@ -214,7 +214,7 @@
   width: 90%;
   border-radius: 5px;
   color: grey;
-  margin-top: 6%;
+  margin-top: 3%;
   font-weight: 600;
   -webkit-transition-duration: 0.1s;
           transition-duration: 0.1s;
@@ -740,7 +740,52 @@
 }
 
 .veide {
-  height: 100px;
-  width: 177px;
+  height: 0;
+  width: 0;
+  opacity: 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.voice-chat-peers {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  width: 75%;
+  margin-top: 3%;
+  color: grey;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.voice-chat-peers img {
+  width: 25px;
+  border-radius: 50%;
+  color: grey;
+  margin: 2% 7%;
+}
+
+.voice-chat-peers h5 {
+  padding: 0;
+  margin: 0;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  text-align: left;
+}
+
+.voice-chat-peers:hover {
+  background-color: #32383b;
+  color: white;
 }
 /*# sourceMappingURL=ServerList.css.map */

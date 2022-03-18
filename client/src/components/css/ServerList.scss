@@ -133,7 +133,7 @@
     width: 90%;
     border-radius: 5px;
     color: grey;
-    margin-top:  6%;
+    margin-top:  3%;
     font-weight: 600;
     transition-duration: 0.1s;
     cursor: pointer;
@@ -482,6 +482,35 @@
     }
   }
 .veide{
-    height: 100px;
-    width: 177px;
+    height: 0;
+    width: 0;
+    opacity: 0;
+    user-select: none;
+}
+.voice-chat-peers{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    width: 75%;
+    margin-top: 3%;
+    color: grey;
+    border-radius: 5px;
+    margin-right: 10px;
+    img{
+        width: 25px;
+        border-radius: 50%;
+        color: grey;
+        margin: 2% 7%;
+    }
+    h5{
+        padding: 0;
+        margin: 0;
+        flex: 1;
+        text-align: left;
+    }
+    &:hover{
+        background-color: rgb(50, 56, 59);
+        color: white;
+    }
 }
