@@ -4,9 +4,8 @@ import { faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 import { selectChannel, setChannel } from '../features/channelSlice'
 import { selectUser } from '../features/userSlice'
 import { useSelector, useDispatch } from 'react-redux'
-import Peer from 'peerjs';
+
 import url from "../url.json"
-let myPeerId;
 export default function CategoryButton(props) {
     let currentChannel = useSelector(selectChannel)
     let currentUser = useSelector(selectUser)
@@ -15,84 +14,29 @@ export default function CategoryButton(props) {
     let channelType = props.type
     let socket = props.socket
     let id = props.uid
+    let peerId = props.PeerId
     function setCurrentChannel() {
         dispatch(setChannel({
             channelName: name,
             channelId: id
         }))
     }
-    function addVoice(video, stream) {
-        video.srcObject = stream
-        video.classList.add('veide')
-        video.addEventListener('loadedmetadata', () => {
-            video.play()
-        })
-        // document.querySelector(".chat-display").appendChild(video)
-    }
-    React.useEffect(() => {
-        let peer = new Peer(undefined, {
-            host: url.peerHost,
-            port: "3001",
-            debug: 3,
-            config: {
-                'iceServers': [
-                    {
-                        'url': 'stun:stun.l.google.com:19302',
-                        'url': 'stun:stun1.l.google.com:19302',
-                    },
-                ]
-            }
-        });
 
-        socket.on("voice-chat-new-user", (channelid, userId) => {
-            console.log(userId)
-            navigator.mediaDevices.getUserMedia({
-                video: false,
-                audio: true
-            }).then(stream => {
-                var call = peer.call(userId, stream);
-                call.on('stream', function (remoteStream) {
-                    const video = document.createElement('video');
-                    addVoice(video, remoteStream)
-                });
-            }).catch(err => {
-                console.log(err)
-            })
-        })
-        peer.on('call', call => {
-            navigator.mediaDevices.getUserMedia({
-                video: false,
-                audio: true
-            }).then(stream => {
-                call.answer(stream)
-                const video = document.createElement('video');
-                call.on('stream', (remoteStream) => {
-                    addVoice(video, remoteStream)
-                })
-            })
-        })
-        peer.on('open', id => {
-            console.log(id)
-            myPeerId = id
-        })
-    }, [])
     function joinVoice(id) {
-        // navigator.mediaDevices.getUserMedia({
-        //     video: true,
-        //     audio: true
-        // }).then(stream => {
-        //     const video = document.createElement('video');
-        //     video.muted = true
-        //     addVoice(video, stream)
-        // })
-        socket.emit("voice-chat-join", id, myPeerId)
+        socket.emit("voice-chat-join", id, peerId)
     }
     return (
         <>
             {channelType === 'text' ? (
                 <div className={id === currentChannel.channel.channelId ? 'channel-select-btn noselect channel-active' : 'channel-select-btn noselect'} onClick={setCurrentChannel}><h2>#</h2> {name}</div>
             ) : (
-                <div className="channel-select-btn noselect" onClick={() => joinVoice(id)}><FontAwesomeIcon icon={faVolumeUp} className="icon" />{name}</div>
+                <>
+                    <div className="channel-select-btn noselect" onClick={() => joinVoice(id)}><FontAwesomeIcon icon={faVolumeUp} className="icon" />{name}</div>
+                    <div className='voice-chat-peers noselect'>
+                        <img src="http://10.194.1.131:4000/profile/622cd8617bf0f520e08d5c55.gif" />
+                        <h5>Aryy</h5>
+                    </div>
+                </>
             )}
         </>
     )
