@@ -357,13 +357,13 @@ io.on('connection', socket => {
             data['displayName'] = user.displayName
             data['key'] = user._id
         })
-        socket.to(serverId).emit('voice-chat-update-user-list', channelId, data)
         ActiveVoiceChat.findOne({ channelId: channelId }, (err, channel) => {
             if (err) throw err;
             // if(channel.members.length===) channel.members = [data]
             if (!channel.members.includes(userId)) {
                 channel.members.push(userId)
                 channel.save()
+                socket.to(serverId).emit('voice-chat-update-user-list', channelId, data)
             }
         })
         // socket.on('get-active-peers', async(userId, channelId) => {
