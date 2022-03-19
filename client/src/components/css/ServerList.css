@@ -740,13 +740,9 @@
 }
 
 .veide {
-  height: 0;
-  width: 0;
-  opacity: 0;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  resize: both;
+  position: absolute;
+  width: 100px;
 }
 
 .voice-chat-peers {

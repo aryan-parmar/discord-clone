@@ -482,10 +482,13 @@
     }
   }
 .veide{
-    height: 0;
-    width: 0;
-    opacity: 0;
-    user-select: none;
+    // height: 0;
+    // width: 0;
+    // opacity: 0;
+    // user-select: none;
+    resize: both;
+    position: absolute;
+    width: 100px;
 }
 .voice-chat-peers{
     display: flex;
