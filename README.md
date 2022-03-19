@@ -46,19 +46,20 @@ cd backend
 npm i
 node index.js
 ```
-starting peerjs server
-```sh
-cd backend
-npm i -g peer
-peerjs --port 3001
-```
 starting frontend app in production mode
 ```sh
 cd client
 npm i
 npm run
 ```
+<!-- optional if you want to run your own peerjs server then change
 
+starting peerjs server
+```sh
+cd backend
+npm i -g peer
+peerjs --port 3001
+``` -->
 ## Features
 
 - [ ] Messaging
