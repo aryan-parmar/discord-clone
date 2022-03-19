@@ -32,10 +32,10 @@ export default function CategoryButton(props) {
             ) : (
                 <>
                     <div className="channel-select-btn noselect" onClick={() => joinVoice(id)}><FontAwesomeIcon icon={faVolumeUp} className="icon" />{name}</div>
-                    <div className='voice-chat-peers noselect'>
+                    {/* <div className='voice-chat-peers noselect'>
                         <img src="http://10.194.1.131:4000/profile/622cd8617bf0f520e08d5c55.gif" />
                         <h5>Aryy</h5>
-                    </div>
+                    </div> */}
                 </>
             )}
         </>
