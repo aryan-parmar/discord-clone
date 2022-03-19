@@ -3,12 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 import { selectChannel, setChannel } from '../features/channelSlice'
 import { selectUser } from '../features/userSlice'
+import { selectServer } from '../features/serverSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
 import url from "../url.json"
 export default function CategoryButton(props) {
     let currentChannel = useSelector(selectChannel)
     let currentUser = useSelector(selectUser)
+    let currentServer = useSelector(selectServer)
+    let [peer, setPeer] = React.useState([])
     const dispatch = useDispatch();
     let name = props.name
     let channelType = props.type
@@ -21,9 +24,37 @@ export default function CategoryButton(props) {
             channelId: id
         }))
     }
-
+    React.useEffect(() => {
+        socket.on('voice-chat-update-user-list', (channelId, data) => {
+            console.log(data)
+            if (channelId === id) {
+                setPeer(old => [...old, data])
+            }
+        })
+        if (channelType === 'voice') {
+            fetch(`${url.server}get/active-peers`, {
+                method: "POST",
+                credentials: 'include',
+                withCredentials: true,
+                headers: {
+                    'Access-Control-Allow-Origin': url.frontend,
+                    'Access-Control-Allow-Credentials': 'true',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+            }).then(response => response.json()).then(res => {
+                if (res.error === null) {
+                    let a = peer.concat(peer, res.data)
+                    setPeer(a)
+                }
+            })
+            socket.emit('get-active-peers',currentUser.id,id)
+        }
+    }, [])
     function joinVoice(id) {
-        socket.emit("voice-chat-join", id, peerId)
+        socket.emit("voice-chat-join", currentServer.server.id, id, peerId, currentUser.id)
+        let data = { displayName: currentUser.name, image: currentUser.profile, key: currentUser.id }
+        setPeer(old => [...old, data])
     }
     return (
         <>
@@ -32,10 +63,12 @@ export default function CategoryButton(props) {
             ) : (
                 <>
                     <div className="channel-select-btn noselect" onClick={() => joinVoice(id)}><FontAwesomeIcon icon={faVolumeUp} className="icon" />{name}</div>
-                    {/* <div className='voice-chat-peers noselect'>
-                        <img src="http://10.194.1.131:4000/profile/622cd8617bf0f520e08d5c55.gif" />
-                        <h5>Aryy</h5>
-                    </div> */}
+                    {peer.map((p) => (
+                        <div key={p.key} className='voice-chat-peers noselect'>
+                            <img src={url.server + p.image} />
+                            <h5>{p.displayName}</h5>
+                        </div>
+                    ))}
                 </>
             )}
         </>

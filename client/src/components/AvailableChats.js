@@ -190,7 +190,7 @@ export default function AvailableChats(props) {
         let peer = new Peer(undefined, {
             // host: url.peerHost,
             // port: "3001",
-            debug: 3,
+            // debug: 3,
             config: {
                 'iceServers': [
                     { url: 'stun:stun01.sipphone.com' },
@@ -239,7 +239,6 @@ export default function AvailableChats(props) {
             }).then(stream => {
                 var call = peer.call(userId, stream);
                 call.on('stream', function (remoteStream) {
-                    console.log('hhhh')
                     const Myvideo = document.createElement('video');
                     Myvideo.classList.add('gg')
                     addVoice(Myvideo, remoteStream)
