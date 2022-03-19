@@ -17,6 +17,7 @@ const User = require('./models/user')
 const ServerModel = require('./models/ServerModel')
 const ChannelModel = require('./models/ChannelModel')
 const ChatModel = require('./models/ChatModel')
+const ActiveVoiceChat = require('./models/ActiveVideoChatsModel')
 app.use(cors({ origin: url.frontend, credentials: true }))
 app.options('*', cors())
 app.use(express.json())
@@ -172,6 +173,11 @@ app.post('/api/register/channel', async (req, res) => {
                 serverfound.channelAvailable.push(channel._id)
                 serverfound.save()
                 res.send({ status: 'done' })
+                if (type === 'voice') {
+                    ActiveVoiceChat.create({
+                        channelId: channel._id,
+                    })
+                }
             }).catch(err => { throw err })
         }
     } else {
@@ -237,6 +243,23 @@ app.post('/update/userdata', async (req, res) => {
         })
     }
 })
+app.post('/get/active-peers', async (req, res) => {
+    if (req.isAuthenticated) {
+        const id = req.body.id
+        await ActiveVoiceChat.findOne({ channelId: id }, async (err, channel) => {
+            if (err) throw err;
+            let UserData = []
+            for (var i = 0; i < channel.members.length; i++) {
+                await User.findOne({ _id: channel.members[i] }, (err, c) => {
+                    if (err) throw err
+                    let data = { displayName: c.displayName, image: c.image, key: c._id }
+                    UserData.push(data);
+                }).catch(err => { throw err })
+            }
+            res.send({ error: null, data: UserData })
+        })
+    }
+})
 app.post('/update/server', async (req, res) => {
     if (req.isAuthenticated) {
         console.log(req.body)
@@ -296,24 +319,26 @@ app.get('/join/:id', (req, res) => {
 })
 io.on('connection', socket => {
     console.log(socket.client.conn.server.clientsCount)
+    console.log(socket.rooms)
     io.emit('joined')
     socket.on('send-msg', (msg, channelId, userId, serverId) => {
         console.log(msg, channelId, userId)
         User.findOne({ _id: userId }, (err, user) => {
             if (err) throw err
-            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now(),userId])
+            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now(), userId])
             socket.to(serverId).emit('new-msg', [msg, user.displayName, user.image, Date.now(), channelId, userId])
             let chat = ChatModel.create({ message: msg, channel: channelId, senderId: userId, by: userId })
         })
     })
     socket.on('authenticate', (cookie) => {
-        console.log("authenticate"+ cookie)
+        console.log("authenticate" + cookie)
     })
     socket.on('join-room', channelId => {
         socket.join(channelId)
         socket.broadcast.to(channelId).emit('user-connected')
     })
     socket.on('server-connected', server => {
+        console.log(socket.rooms)
         socket.join(server)
         console.log(server)
     })
@@ -321,10 +346,47 @@ io.on('connection', socket => {
         console.log(serverId)
         socket.to(serverId).emit('new-channel', serverId)
     })
-    socket.on('voice-chat-join',(channelId,userId)=>{
-        console.log(channelId, userId)
+    socket.on('voice-chat-join', async (serverId, channelId, peerId, userId) => {
+        console.log(channelId, peerId)
         socket.join(channelId)
-        socket.to(channelId).emit('voice-chat-new-user',channelId, userId)
+        socket.to(channelId).emit('voice-chat-new-user', channelId, peerId)
+        let data = { image: '', displayName: '', key: '' }
+        await User.findOne({ _id: userId }, (err, user) => {
+            if (err) throw err;
+            data['image'] = user.image;
+            data['displayName'] = user.displayName
+            data['key'] = user._id
+        })
+        socket.to(serverId).emit('voice-chat-update-user-list', channelId, data)
+        ActiveVoiceChat.findOne({ channelId: channelId }, (err, channel) => {
+            if (err) throw err;
+            // if(channel.members.length===) channel.members = [data]
+            if (!channel.members.includes(userId)) {
+                channel.members.push(userId)
+                channel.save()
+            }
+        })
+        // socket.on('get-active-peers', async(userId, channelId) => {
+        //     await ActiveVoiceChat.findOne({ channelId: channelId }, async (err, channel) => {
+        //         if (err) throw err;
+        //         await channel.members.map(async (member) => {
+        //             await User.findOne({ _id: member }, async (err, user) => {
+        //                 if (err) throw err;
+        //                 data['displayName'] = user.displayName
+        //                 data['image'] = user.image
+        //                 dataArray.push(data)
+        //             })
+        //         })
+        //         // for (let i = 0; i < channel.members.length; i++) {
+        //         //     await User.findOne({ _id: channel.members[i] }, async (err, user) => {
+        //         //         if (err) throw err;
+        //         //         data['displayName'] = user.displayName
+        //         //         data['image'] = user.image
+        //         //         dataArray.push(data)
+        //         //     })
+        //         // }
+        //     })
+        // })
     })
 })
 server.listen(4000, (console.log('Server Started')))
