@@ -188,7 +188,7 @@ export default function AvailableChats(props) {
     };
     React.useEffect(() => {
         let peer = new Peer(undefined, {
-            // host: "10.194.8.66",
+            // host: url.peerHost,
             // port: "3001",
             debug: 3,
             config: {
@@ -234,21 +234,24 @@ export default function AvailableChats(props) {
         socket.on("voice-chat-new-user", (channelid, userId) => {
             console.log(userId)
             navigator.mediaDevices.getUserMedia({
-                video: false,
+                video: { width: 1280, height: 720 },
                 audio: true
             }).then(stream => {
                 var call = peer.call(userId, stream);
                 call.on('stream', function (remoteStream) {
-                    const video = document.createElement('video');
-                    addVoice(video, remoteStream)
+                    console.log('hhhh')
+                    const Myvideo = document.createElement('video');
+                    Myvideo.classList.add('gg')
+                    addVoice(Myvideo, remoteStream)
                 });
             }).catch(err => {
                 console.log(err)
             })
         })
         peer.on('call', call => {
+            console.log('gg')
             navigator.mediaDevices.getUserMedia({
-                video: false,
+                video: { width: 1280, height: 720 , frameRate: 30},
                 audio: true
             }).then(stream => {
                 call.answer(stream)
