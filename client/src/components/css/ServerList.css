@@ -742,7 +742,8 @@
 .veide {
   resize: both;
   position: absolute;
-  width: 100px;
+  height: 20%;
+  left: 70%;
 }
 
 .voice-chat-peers {
