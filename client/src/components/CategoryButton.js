@@ -4,6 +4,7 @@ import { faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 import { selectChannel, setChannel } from '../features/channelSlice'
 import { selectUser } from '../features/userSlice'
 import { selectServer } from '../features/serverSlice'
+import { setActiceChat } from '../features/activeChatSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
 import url from "../url.json"
@@ -18,12 +19,28 @@ export default function CategoryButton(props) {
     let socket = props.socket
     let id = props.uid
     let peerId = props.PeerId
+    let state = props.state
     function setCurrentChannel() {
         dispatch(setChannel({
             channelName: name,
             channelId: id
         }))
     }
+    React.useEffect(() => {
+        if (channelType === 'voice') {
+            if (peer.length !== 0) {
+
+                let ind
+                for (let i = 0; i < peer.length; i++) {
+                    if (peer[i].key = currentUser.id) {
+                        ind = i;
+                        break
+                    }
+                }
+                peer.splice(ind, 1)
+            }
+        }
+    }, [state])
     React.useEffect(() => {
         socket.on('voice-chat-update-user-list', (channelId, data) => {
             console.log(data)
@@ -46,15 +63,41 @@ export default function CategoryButton(props) {
                 if (res.error === null) {
                     let a = peer.concat(peer, res.data)
                     setPeer(a)
+                    const isFound = a.some(element => {
+                        if (element.key === currentUser.id) {
+                            return true;
+                        }
+                    });
+                    if (isFound) {
+                        console.log(currentChannel)
+                        dispatch(setActiceChat({
+                            id: id,
+                            name: name
+                        }))
+                        socket.emit("voice-chat-join", currentServer.server.id, id, peerId, currentUser.id)
+                    }
                 }
             })
-            socket.emit('get-active-peers',currentUser.id,id)
+            socket.emit('get-active-peers', currentUser.id, id)
         }
     }, [])
+
     function joinVoice(id) {
         socket.emit("voice-chat-join", currentServer.server.id, id, peerId, currentUser.id)
-        let data = { displayName: currentUser.name, image: currentUser.profile, key: currentUser.id }
-        setPeer(old => [...old, data])
+        let data = { image: currentUser.profile, displayName: currentUser.name, key: currentUser.id }
+        const isFound = peer.some(element => {
+            if (element.key === currentUser.id) {
+                return true;
+            }
+        });
+
+        if (!isFound) {
+            setPeer(old => [...old, data])
+            dispatch(setActiceChat({
+                id: id,
+                name: name
+            }))
+        }
     }
     return (
         <>

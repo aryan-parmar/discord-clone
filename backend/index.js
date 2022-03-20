@@ -260,6 +260,18 @@ app.post('/get/active-peers', async (req, res) => {
         })
     }
 })
+app.post('/update/active-peers', async (req, res) => {
+    if (req.isAuthenticated) {
+        const userId = req.body.userId
+        const channelId = req.body.channelId
+        await ActiveVoiceChat.findOne({ channelId: channelId }, async (err, channel) => {
+            if (err) throw err;
+            await channel.members.splice(channel.members.indexOf(userId),1)
+            channel.save()
+            res.send({ error: null })
+        })
+    }
+})
 app.post('/update/server', async (req, res) => {
     if (req.isAuthenticated) {
         console.log(req.body)
@@ -359,34 +371,12 @@ io.on('connection', socket => {
         })
         ActiveVoiceChat.findOne({ channelId: channelId }, (err, channel) => {
             if (err) throw err;
-            // if(channel.members.length===) channel.members = [data]
             if (!channel.members.includes(userId)) {
                 channel.members.push(userId)
                 channel.save()
                 socket.to(serverId).emit('voice-chat-update-user-list', channelId, data)
             }
         })
-        // socket.on('get-active-peers', async(userId, channelId) => {
-        //     await ActiveVoiceChat.findOne({ channelId: channelId }, async (err, channel) => {
-        //         if (err) throw err;
-        //         await channel.members.map(async (member) => {
-        //             await User.findOne({ _id: member }, async (err, user) => {
-        //                 if (err) throw err;
-        //                 data['displayName'] = user.displayName
-        //                 data['image'] = user.image
-        //                 dataArray.push(data)
-        //             })
-        //         })
-        //         // for (let i = 0; i < channel.members.length; i++) {
-        //         //     await User.findOne({ _id: channel.members[i] }, async (err, user) => {
-        //         //         if (err) throw err;
-        //         //         data['displayName'] = user.displayName
-        //         //         data['image'] = user.image
-        //         //         dataArray.push(data)
-        //         //     })
-        //         // }
-        //     })
-        // })
     })
 })
 server.listen(4000, (console.log('Server Started')))
