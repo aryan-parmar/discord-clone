@@ -548,6 +548,59 @@
       -ms-flex-pack: start;
           justify-content: flex-start;
   background-color: #272a2e;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.personal-details .disconnect-button {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.personal-details .disconnect-button h4 {
+  text-align: left;
+  color: white;
+  overflow: hidden;
+  font-weight: 400;
+  margin: 15px;
+}
+
+.personal-details .disconnect-button button {
+  background-color: transparent;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.personal-details .disconnect-button button:hover {
+  background-color: black;
+}
+
+.personal-details .details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
 }
 
 .personal-details img {

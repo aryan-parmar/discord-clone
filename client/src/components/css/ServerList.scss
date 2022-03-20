@@ -358,7 +358,40 @@
     width: 100%;
     align-items: center;
     justify-content: flex-start;
-    background-color:rgb(39, 42, 46) ;
+    background-color:rgb(39, 42, 46);
+    flex-direction: column;
+    .disconnect-button{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        h4{
+            text-align: left;
+            color: white;
+            overflow: hidden;
+            font-weight: 400;
+            margin: 15px;
+        }
+        button{
+            background-color: transparent;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            margin: 10px;
+            &:hover{
+                background-color: black;
+            }
+        }
+    }
+    .details{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: flex-start;
+    }
     img{
         height: 35px;
         width: 35px;
