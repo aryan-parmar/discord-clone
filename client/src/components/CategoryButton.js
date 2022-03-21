@@ -4,7 +4,7 @@ import { faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 import { selectChannel, setChannel } from '../features/channelSlice'
 import { selectUser } from '../features/userSlice'
 import { selectServer } from '../features/serverSlice'
-import { setActiceChat } from '../features/activeChatSlice'
+import { setActiceChat, selectActiveChat } from '../features/activeChatSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
 import url from "../url.json"
@@ -12,6 +12,7 @@ export default function CategoryButton(props) {
     let currentChannel = useSelector(selectChannel)
     let currentUser = useSelector(selectUser)
     let currentServer = useSelector(selectServer)
+    let currentActive = useSelector(selectActiveChat)
     let [peer, setPeer] = React.useState([])
     const dispatch = useDispatch();
     let name = props.name
@@ -83,20 +84,25 @@ export default function CategoryButton(props) {
     }, [])
 
     function joinVoice(id) {
-        socket.emit("voice-chat-join", currentServer.server.id, id, peerId, currentUser.id)
-        let data = { image: currentUser.profile, displayName: currentUser.name, key: currentUser.id }
-        const isFound = peer.some(element => {
-            if (element.key === currentUser.id) {
-                return true;
-            }
-        });
+        if (currentActive.active == null) {
+            socket.emit("voice-chat-join", currentServer.server.id, id, peerId, currentUser.id)
+            let data = { image: currentUser.profile, displayName: currentUser.name, key: currentUser.id }
+            const isFound = peer.some(element => {
+                if (element.key === currentUser.id) {
+                    return true;
+                }
+            });
 
-        if (!isFound) {
-            setPeer(old => [...old, data])
-            dispatch(setActiceChat({
-                id: id,
-                name: name
-            }))
+            if (!isFound) {
+                setPeer(old => [...old, data])
+                dispatch(setActiceChat({
+                    id: id,
+                    name: name
+                }))
+            }
+        }
+        else{
+            alert("disconnect other voice channel")
         }
     }
     return (
