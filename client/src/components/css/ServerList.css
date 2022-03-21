@@ -385,6 +385,8 @@
   font-size: 1.6rem;
   -webkit-transition-duration: .1s;
           transition-duration: .1s;
+  -webkit-transition-timing-function: cubic-bezier(0.06, 0.85, 0.63, 1.18);
+          transition-timing-function: cubic-bezier(0.06, 0.85, 0.63, 1.18);
 }
 
 .imoji:hover {
@@ -484,7 +486,7 @@
 }
 
 .member h4 {
-  color: white;
+  color: #969696;
   font-weight: 500;
 }
 
