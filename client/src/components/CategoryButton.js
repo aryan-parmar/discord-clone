@@ -29,24 +29,64 @@ export default function CategoryButton(props) {
     }
     React.useEffect(() => {
         if (channelType === 'voice') {
-            if (peer.length !== 0) {
+            setTimeout(() => {
+                fetch(`${url.server}get/active-peers`, {
+                    method: "POST",
+                    credentials: 'include',
+                    withCredentials: true,
+                    headers: {
+                        'Access-Control-Allow-Origin': url.frontend,
+                        'Access-Control-Allow-Credentials': 'true',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: id })
+                }).then(response => response.json()).then(res => {
+                    if (res.error === null) {
+                        let a = res.data
+                        setPeer(a)
 
-                let ind
-                for (let i = 0; i < peer.length; i++) {
-                    if (peer[i].key = currentUser.id) {
-                        ind = i;
-                        break
                     }
-                }
-                peer.splice(ind, 1)
-            }
+                });
+            }, 3000);
         }
     }, [state])
     React.useEffect(() => {
-        socket.on('voice-chat-update-user-list', (channelId, data) => {
+        socket.on('voice-chat-update-user-list', (channelId, data, userId, entered) => {
             console.log(data)
             if (channelId === id) {
-                setPeer(old => [...old, data])
+                if (entered) {
+                    setPeer(old => [...old, data])
+                } else {
+                    // let ind
+                    // console.log(peer.length)
+                    // // for (let i = 0; i < peer.length; i++) {
+                    // //     // if (peer[i].key === userId) {
+                    // //     //     ind = i;
+                    // //     //     break
+                    // //     // }
+                    // // }
+                    // // console.log(ind)
+                    // // peer.splice(ind, 1)
+                    setTimeout(() => {
+                        fetch(`${url.server}get/active-peers`, {
+                            method: "POST",
+                            credentials: 'include',
+                            withCredentials: true,
+                            headers: {
+                                'Access-Control-Allow-Origin': url.frontend,
+                                'Access-Control-Allow-Credentials': 'true',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ id: id })
+                        }).then(response => response.json()).then(res => {
+                            if (res.error === null) {
+                                let a = res.data
+                                setPeer(a)
+
+                            }
+                        });
+                    }, 3000);
+                }
             }
         })
         if (channelType === 'voice') {
@@ -100,8 +140,9 @@ export default function CategoryButton(props) {
                     name: name
                 }))
             }
+            console.log(peer)
         }
-        else{
+        else {
             alert("disconnect other voice channel")
         }
     }

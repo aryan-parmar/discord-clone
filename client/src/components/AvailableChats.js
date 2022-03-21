@@ -237,7 +237,8 @@ export default function AvailableChats(props) {
         socket.on("voice-chat-new-user", (channelid, userId) => {
             console.log(userId)
             navigator.mediaDevices.getUserMedia({
-                video: { width: 1280, height: 720 },
+                // video: { width: 1280, height: 720 },
+                video: false,
                 audio: true
             }).then(stream => {
                 var call = peer.call(userId, stream);
@@ -253,7 +254,8 @@ export default function AvailableChats(props) {
         peer.on('call', call => {
             console.log('gg')
             navigator.mediaDevices.getUserMedia({
-                video: { width: 1280, height: 720, frameRate: 30 },
+                // video: { width: 1280, height: 720, frameRate: 30 },
+                video: false,
                 audio: true
             }).then(stream => {
                 call.answer(stream)
@@ -269,7 +271,6 @@ export default function AvailableChats(props) {
         })
 
     }, [changeState])
-    console.log(currentActiveChannel.active)
     function disconnect() {
         peer.destroy()
         fetch(`${url.server}update/active-peers`, {
@@ -288,7 +289,8 @@ export default function AvailableChats(props) {
                     null
                 ))
                 setChangeState(!changeState)
-            }
+                socket.emit('voice-chat-disconnect',currentActiveChannel.active.id,currentUser.id,currentServer.server.serverId)
+            }   
         })
     }
     return (

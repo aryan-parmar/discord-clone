@@ -374,9 +374,15 @@ io.on('connection', socket => {
             if (!channel.members.includes(userId)) {
                 channel.members.push(userId)
                 channel.save()
-                socket.to(serverId).emit('voice-chat-update-user-list', channelId, data)
+                socket.to(serverId).emit('voice-chat-update-user-list', channelId, data, userId,true)
             }
         })
+    })
+    socket.on("voice-chat-disconnect",(channelId,userId,serverId)=>{
+        console.log(serverId)
+        socket.leave(channelId);
+        data = {}
+        socket.to(serverId).emit('voice-chat-update-user-list', channelId, data, userId, false)
     })
 })
 server.listen(4000, (console.log('Server Started')))
