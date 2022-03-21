@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 import './login.css'
 import url from "./url.json"
 import AppHome from './components/AppHome'
+import Loading from "./components/Loading"
 import socketIOClient from "socket.io-client"
 var socket = socketIOClient(url.server);
 function App() {
@@ -259,7 +260,7 @@ function App() {
               }
             </>}
         </>
-        : <h1>loading .....</h1>}
+        : <Loading></Loading>}
     </div>
   );
 }
