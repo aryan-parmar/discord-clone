@@ -503,8 +503,8 @@
 }
 
 .square-btn {
-  -webkit-box-shadow: -50px 0px 0px 0px #FFFFFF;
-  box-shadow: -3.3rem 0px 0px 0px  #FFFFFF;
+  -webkit-box-shadow: -3.3rem 0px 0px 0px  #FFFFFF;
+          box-shadow: -3.3rem 0px 0px 0px  #FFFFFF;
 }
 
 .server-channel-display {
