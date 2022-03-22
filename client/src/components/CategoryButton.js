@@ -44,7 +44,6 @@ export default function CategoryButton(props) {
                     if (res.error === null) {
                         let a = res.data
                         setPeer(a)
-
                     }
                 });
             }, 3000);
@@ -52,7 +51,6 @@ export default function CategoryButton(props) {
     }, [state])
     React.useEffect(() => {
         socket.on('voice-chat-update-user-list', (channelId, data, userId, entered) => {
-            console.log(data)
             if (channelId === id) {
                 if (entered) {
                     setPeer(old => [...old, data])
@@ -110,7 +108,6 @@ export default function CategoryButton(props) {
                         }
                     });
                     if (isFound) {
-                        console.log(currentChannel)
                         dispatch(setActiceChat({
                             id: id,
                             name: name
@@ -140,7 +137,6 @@ export default function CategoryButton(props) {
                     name: name
                 }))
             }
-            console.log(peer)
         }
         else {
             alert("disconnect other voice channel")
