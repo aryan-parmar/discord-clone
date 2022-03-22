@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
-
+let uri = process.env.MONGO_DB_URI
 const mongo = async ()=>{
     try{
-        const conn = await mongoose.connect('mongodb://localhost:27017/discordClone',{
+        const conn = await mongoose.connect(uri,{
             useNewUrlParser:true,
             useUnifiedTopology: true,
             useFindAndModify: false
