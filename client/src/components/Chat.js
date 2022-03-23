@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import ImojiButton from './ImojiButton'
 import ChatDisplay from './ChatDisplay'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { selectChannel } from '../features/channelSlice'
 import { selectUser } from '../features/userSlice'
 import { selectServer } from '../features/serverSlice'
@@ -93,6 +95,7 @@ export default function Chat(props) {
             </div>
             <div className='chat-input'>
                 <div className='chat-input-btns'>
+                <FontAwesomeIcon icon={faPlusCircle} style={{ margin:'0 2%', cursor: 'pointer',fontSize: "1.3rem", color:"rgb(150, 150, 150)" }}/>
                     <form onSubmit={handleSubmit}>
                         <input type="text" placeholder={`Message #${currentChannel.channel.channelName}`} value={message} onChange={(e) => setMessage(e.target.value)} />
                     </form>

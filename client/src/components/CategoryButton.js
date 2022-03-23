@@ -55,16 +55,6 @@ export default function CategoryButton(props) {
                 if (entered) {
                     setPeer(old => [...old, data])
                 } else {
-                    // let ind
-                    // console.log(peer.length)
-                    // // for (let i = 0; i < peer.length; i++) {
-                    // //     // if (peer[i].key === userId) {
-                    // //     //     ind = i;
-                    // //     //     break
-                    // //     // }
-                    // // }
-                    // // console.log(ind)
-                    // // peer.splice(ind, 1)
                     setTimeout(() => {
                         fetch(`${url.server}get/active-peers`, {
                             method: "POST",
