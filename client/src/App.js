@@ -9,8 +9,6 @@ import './login.css'
 import url from "./url.json"
 import AppHome from './components/AppHome'
 import Loading from "./components/Loading"
-import socketIOClient from "socket.io-client"
-var socket = socketIOClient(url.server);
 function App() {
   let [ShowApp, setShowApp] = useState(false)
   let [loginState, setLoginState] = useState(false)
@@ -179,7 +177,7 @@ function App() {
     <div className="App">
       {isLoaded ?
         <>
-          {ShowApp ? <AppHome socket={socket} /> :
+          {ShowApp ? <AppHome /> :
             <>
               {loginOp ?
                 <>

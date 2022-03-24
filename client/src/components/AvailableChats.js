@@ -120,7 +120,7 @@ export default function AvailableChats(props) {
                 if (!("Notification" in window)) {
                     console.log("This browser does not support desktop notification");
                 } else {
-                    var notification = new Notification("new message", { body: a[1] + ' : "' + a[0] + '"', icon: url.server + a[2], tag: a[4] })
+                    new Notification("new message", { body: a[1] + ' : "' + a[0] + '"', icon: url.server + a[2], tag: a[4] })
                 }
             }
         })

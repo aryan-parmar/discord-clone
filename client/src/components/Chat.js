@@ -72,8 +72,8 @@ export default function Chat(props) {
             <div className='chat-display' ref={chatContainer}>
 
                 {previousMessageList.map((message, ind) => (
-                    <ChatDisplay 
-                        lastmessage={ind === 0 ? 0 : {id:previousMessageList[ind - 1]["senderId"], date:previousMessageList[ind - 1]['time']}}
+                    <ChatDisplay
+                        lastmessage={ind === 0 ? 0 : { id: previousMessageList[ind - 1]["senderId"], date: previousMessageList[ind - 1]['time'] }}
                         key={message._id}
                         from={message.by}
                         profileImage={message.senderProfile}
@@ -84,7 +84,7 @@ export default function Chat(props) {
                 ))}
                 {messageList.map((message, ind) => (
                     <ChatDisplay
-                        lastmessage={ind === 0 ? previousMessageList[previousMessageList - 1] ? {id:previousMessageList[previousMessageList - 1]["senderId"],date: previousMessageList[previousMessageList - 1]['time']} : {id:0,date:""} : {id:messageList[ind - 1][5],date:messageList[ind - 1][4]}}
+                        lastmessage={ind === 0 ? previousMessageList[previousMessageList - 1] ? { id: previousMessageList[previousMessageList - 1]["senderId"], date: previousMessageList[previousMessageList - 1]['time'] } : { id: 0, date: "" } : { id: messageList[ind - 1][5], date: messageList[ind - 1][4] }}
                         key={ind} from={message[1]}
                         profileImage={message[2]}
                         date={message[4]}
@@ -95,7 +95,7 @@ export default function Chat(props) {
             </div>
             <div className='chat-input'>
                 <div className='chat-input-btns'>
-                <FontAwesomeIcon icon={faPlusCircle} style={{ margin:'0 2%', cursor: 'pointer',fontSize: "1.3rem", color:"rgb(150, 150, 150)" }}/>
+                    <FontAwesomeIcon icon={faPlusCircle} style={{ margin: '0 2%', cursor: 'pointer', fontSize: "1.3rem", color: "rgb(150, 150, 150)" }} />
                     <form onSubmit={handleSubmit}>
                         <input type="text" placeholder={`Message #${currentChannel.channel.channelName}`} value={message} onChange={(e) => setMessage(e.target.value)} />
                     </form>
