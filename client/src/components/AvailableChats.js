@@ -194,7 +194,7 @@ export default function AvailableChats(props) {
         peer = new Peer(undefined, {
             // host: url.peerHost,
             // port: "3001",
-            // debug: 3,
+            debug: 3,
             config: {
                 'iceServers': [
                     { url: 'stun:stun01.sipphone.com' },

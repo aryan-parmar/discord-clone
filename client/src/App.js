@@ -118,7 +118,7 @@ function App() {
 
 
     if (typeof fields["username"] !== "undefined") {
-      if (!fields["username"].match(/^[a-zA-Z]+$/)) {
+      if (!fields["username"].match(/^[a-zA-Z-0-9]+$/)) {
         formIsValid = false;
         setuError('invalid username');
       }

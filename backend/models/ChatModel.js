@@ -23,6 +23,14 @@ const ChatSchema = new mongoose.Schema({
     senderProfile:{
         type:String,
         default: ''
+    },
+    type: {
+        type: String,
+        default: 'text'
+    },
+    filedata:{
+        type: Object,
+        default: {}
     }
 })
 module.exports = mongoose.model('Chat', ChatSchema)

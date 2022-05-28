@@ -206,8 +206,23 @@
 .chat-input{
     flex:0.1;
     display: flex;
-    justify-content:center;
-    align-items:top;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 1%;
+}
+.file-name-display{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 95%;
+    height: 50px;
+    background-color: #2c2f33;
+    border-radius: 5px;
+    color: #adadad;
+    font-size: large;
+    pointer-events: none;
+    user-select: none;
 }
 .chat-input-btns{
     background-color: rgb(67, 75, 80);
@@ -217,7 +232,7 @@
     align-items: center;
     border-radius: 5px;
 }
-.chat-input-btns form input {
+.chat-input-btns form input[type="text"] {
     flex: 1;
     background-color: transparent;
     border: none;
@@ -311,6 +326,31 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+}
+.file-attachment{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #2c2f33;
+    padding: 5% ;
+    width: 250px;
+    border-radius: 5px;
+    margin-top: 3px;
+    .filedata{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        margin-left: 3%;
+        a{
+            text-decoration: none;
+            color: cyan;
+        }
+        h6{
+            padding: 0;
+            margin: 0;
+        }
+    }
 }
 .member img {
     height: 40px;

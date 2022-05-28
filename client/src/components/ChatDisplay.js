@@ -1,4 +1,6 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFile } from '@fortawesome/free-solid-svg-icons'
 import url from '../url.json'
 
 export default function ChatDisplay(props) {
@@ -7,6 +9,9 @@ export default function ChatDisplay(props) {
     let date = props.date
     let previous = props.lastmessage.id
     let previousDate = props.lastmessage.date
+    let type = props.type
+    let filedata = props.filedata
+    console.log(type)
     previousDate = new Date(previousDate).toLocaleDateString()
     let current = props.current
     let a = 1
@@ -23,6 +28,15 @@ export default function ChatDisplay(props) {
                     <></>
                 }
                 <h5>{props.msg}</h5>
+                {type === "file" ?
+                <div className='file-attachment'>
+                    <FontAwesomeIcon icon={faFile} style={{ margin: '0 2%', fontSize: "1.6rem", color: "rgb(150, 150, 150)", pointerEvents: "none" }} />
+                    <div className='filedata'>
+                        <a href={url.server + filedata.src} target="_blank">{filedata.name}</a>
+                        <h6>{(filedata.size/1000000).toFixed(2)}mb</h6>
+                    </div>
+                </div>
+                : <></>}
             </div>
         </div>
     )

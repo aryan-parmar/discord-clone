@@ -11,6 +11,9 @@ const cookieParser = require('cookie-parser')
 const bcrypt = require('bcrypt')
 const session = require('express-session')
 const fileUpload = require('express-fileupload')
+const fs = require('fs/promises');
+const Fs = require('fs');
+const { uuid } = require('uuidv4');
 var morgan = require('morgan')
 mongo()
 const User = require('./models/user')
@@ -266,7 +269,7 @@ app.post('/update/active-peers', async (req, res) => {
         const channelId = req.body.channelId
         await ActiveVoiceChat.findOne({ channelId: channelId }, async (err, channel) => {
             if (err) throw err;
-            await channel.members.splice(channel.members.indexOf(userId),1)
+            await channel.members.splice(channel.members.indexOf(userId), 1)
             channel.save()
             res.send({ error: null })
         })
@@ -304,6 +307,32 @@ app.post('/update/server', async (req, res) => {
         })
     }
 })
+app.post('/upload-file', async (req, res) => {
+    if (req.isAuthenticated) {
+        const file = req.files.file
+        let folder = "files/"
+        let Fileid = uuid()
+        var fileExt = file.name.split('.').pop();
+        while (Fs.existsSync("./usercontent/" + folder + Fileid + '.' + fileExt)) {
+            Fileid = uuid()
+        }
+        console.log(file)
+        file.mv("./usercontent/" + folder + Fileid + "." + fileExt, async (error) => {
+            if (error) {
+                console.error(error)
+                res.writeHead(500, {
+                    'Content-Type': 'application/json'
+                })
+                res.end(JSON.stringify({ status: 'error', message: error }))
+                return
+            }
+            res.writeHead(200, {
+                'Content-Type': 'application/json'
+            })
+            res.end(JSON.stringify({ status: 'Uploaded',data: folder + Fileid + "." + fileExt }))
+        })
+    }
+})
 app.get('/join/:id', (req, res) => {
     if (req.isAuthenticated()) {
         let id = req.params.id
@@ -337,9 +366,18 @@ io.on('connection', socket => {
         console.log(msg, channelId, userId)
         User.findOne({ _id: userId }, (err, user) => {
             if (err) throw err
-            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now(), userId])
+            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now(), userId, "text"])
             socket.to(serverId).emit('new-msg', [msg, user.displayName, user.image, Date.now(), channelId, userId])
             let chat = ChatModel.create({ message: msg, channel: channelId, senderId: userId, by: userId })
+        })
+    })
+    socket.on('message-with-file', (name, size, src, msg, channelId, userId, serverId) => {
+        User.findOne({ _id: userId }, (err, user) => {
+            if (err) throw err
+            // socket.to(userId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now(), userId, "file"])
+            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now(), userId, "file", {name:name,size:size,src:src}])
+            socket.to(serverId).emit('new-msg', [msg, user.displayName, user.image, Date.now(), channelId, userId])
+            let chat = ChatModel.create({ message: msg, channel: channelId, senderId: userId, by: userId, filedata: { name: name, size: size, src: src}, type: "file" })
         })
     })
     socket.on('authenticate', (cookie) => {
@@ -374,11 +412,11 @@ io.on('connection', socket => {
             if (!channel.members.includes(userId)) {
                 channel.members.push(userId)
                 channel.save()
-                socket.to(serverId).emit('voice-chat-update-user-list', channelId, data, userId,true)
+                socket.to(serverId).emit('voice-chat-update-user-list', channelId, data, userId, true)
             }
         })
     })
-    socket.on("voice-chat-disconnect",(channelId,userId,serverId)=>{
+    socket.on("voice-chat-disconnect", (channelId, userId, serverId) => {
         console.log(serverId)
         socket.leave(channelId);
         data = {}
