@@ -62,10 +62,11 @@ peerjs --port 3001
 ``` -->
 ## Features
 
-- [ ] Messaging
-- [ ] Create Servers
-- [ ] Create Channels
-- [ ] Add Members
+- Messaging
+- Adding files in chat 
+- Create Servers
+- Create Channels
+- Add Members
 
 
 <!-- CONTRIBUTING -->
