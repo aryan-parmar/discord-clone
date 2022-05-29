@@ -350,11 +350,22 @@
   border-radius: 5px;
   color: #adadad;
   font-size: large;
-  pointer-events: none;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.file-name-display button {
+  font-weight: lighter;
+  margin-left: auto;
+  margin-right: 3%;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: #adadad;
+  -webkit-transform: scale(1.4);
+          transform: scale(1.4);
 }
 
 .chat-input-btns {
@@ -517,9 +528,11 @@
           justify-content: center;
   background-color: #2c2f33;
   margin-top: 5px;
+  border-radius: 5px;
 }
 
 .file-chat-preview img {
+  border-radius: 5px;
   width: 90%;
   height: 90%;
   -o-object-fit: cover;

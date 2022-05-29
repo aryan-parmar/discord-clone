@@ -139,6 +139,7 @@ export default function Chat(props) {
                     <div className='file-name-display'>
                         <FontAwesomeIcon icon={faFile} style={{ margin: '0 2%', fontSize: "1.3rem", color: "rgb(150, 150, 150)", pointerEvents: "none" }} />
                         {selectedFile ? selectedFile.name : ''}
+                        <button onClick={()=>setSelectedFile('')}>X</button>
                     </div>
                     : null}
                 <div className='chat-input-btns'>
