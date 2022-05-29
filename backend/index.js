@@ -329,7 +329,7 @@ app.post('/upload-file', async (req, res) => {
             res.writeHead(200, {
                 'Content-Type': 'application/json'
             })
-            res.end(JSON.stringify({ status: 'Uploaded',data: folder + Fileid + "." + fileExt }))
+            res.end(JSON.stringify({ status: 'Uploaded', data: folder + Fileid + "." + fileExt }))
         })
     }
 })
@@ -375,9 +375,9 @@ io.on('connection', socket => {
         User.findOne({ _id: userId }, (err, user) => {
             if (err) throw err
             // socket.to(userId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now(), userId, "file"])
-            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now(), userId, "file", {name:name,size:size,src:src}])
+            socket.to(channelId).emit('msg', [msg, user.displayName, user.image, channelId, Date.now(), userId, "file", { name: name, size: size, src: src }])
             socket.to(serverId).emit('new-msg', [msg, user.displayName, user.image, Date.now(), channelId, userId])
-            let chat = ChatModel.create({ message: msg, channel: channelId, senderId: userId, by: userId, filedata: { name: name, size: size, src: src}, type: "file" })
+            let chat = ChatModel.create({ message: msg, channel: channelId, senderId: userId, by: userId, filedata: { name: name, size: size, src: src }, type: "file" })
         })
     })
     socket.on('authenticate', (cookie) => {
