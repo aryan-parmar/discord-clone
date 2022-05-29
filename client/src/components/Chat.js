@@ -66,7 +66,7 @@ export default function Chat(props) {
         e.preventDefault()
         if (message !== '' && !selectedFile) {
             socket.emit('send-msg', message, currentChannel.channel.channelId, currentUser.id, currentServer.server.serverId)
-            setMessageList(b => [...b, [message, currentUser.name, currentUser.profile, currentChannel.channel.channelIdx, Date.now(), currentUser.name, "text"]])
+            setMessageList(b => [...b, [message, currentUser.name, currentUser.profile, currentChannel.channel.channelIdx, Date.now(), currentUser.id, "text"]])
             setMessage('')
         }
         if (selectedFile) {
@@ -90,7 +90,7 @@ export default function Chat(props) {
                 if (res.status === "Uploaded") {
                     selectedFilesrc = res.data
                     socket.emit('message-with-file', selectedFile.name, selectedFile.size, selectedFilesrc, message, currentChannel.channel.channelId, currentUser.id, currentServer.server.serverId);
-                    setMessageList(b => [...b, [message, currentUser.name, currentUser.profile, currentChannel.channel.channelId, Date.now(), user.id, "file", { name: selectedFile.name, size: selectedFile.size, src: selectedFilesrc }]])
+                    setMessageList(b => [...b, [message, currentUser.name, currentUser.profile, currentChannel.channel.channelId, Date.now(), currentUser.id, "file", { name: selectedFile.name, size: selectedFile.size, src: selectedFilesrc }]])
                 }
             });
             setMessage('')
@@ -101,7 +101,7 @@ export default function Chat(props) {
     function FileChosen(evnt) {
         if (evnt.target.files[0]) {
             setSelectedFile(evnt.target.files[0])
-            console.log(evnt.target.files[0])
+            document.querySelector(".cinput").focus()
         }
     }
     return (
@@ -145,7 +145,7 @@ export default function Chat(props) {
                 <div className='chat-input-btns'>
                     <form onSubmit={handleSubmit}>
                         <input type="file" style={{ position: "absolute", opacity: "0", zIndex: "0" }} onChange={(e) => FileChosen(e)} /><FontAwesomeIcon icon={faPlusCircle} style={{ margin: '0 2%', cursor: 'pointer', fontSize: "1.3rem", color: "rgb(150, 150, 150)", pointerEvents: "none" }} />
-                        <input type="text" style={{ zIndex: "1" }} placeholder={`Message #${currentChannel.channel.channelName}`} value={message} onChange={(e) => setMessage(e.target.value)} />
+                        <input type="text" style={{ zIndex: "1" }} className="cinput" placeholder={`Message #${currentChannel.channel.channelName}`} value={message} onChange={(e) => setMessage(e.target.value)} />
                     </form>
                     <div className="gif-icon noselect"><h5>GIF</h5></div>
                     <ImojiButton></ImojiButton>
