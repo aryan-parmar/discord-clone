@@ -26,16 +26,15 @@ export default function Chat(props) {
     let [messageList, setMessageList] = React.useState([])
     let [previousMessageList, setPreviousMessageList] = React.useState([])
     let user = props.user
-    console.log(user)
     let [response, setResponse] = React.useState([])
     useEffect(() => {
         socket.on('msg', (a) => { setResponse(a) })
-        socket.on('joined', () => { console.log('you joined') });
-        socket.on('user-connected', () => { console.log("user-connected") })
+        // socket.on('joined', () => { console.log('you joined') });
+        // socket.on('user-connected', () => { console.log("user-connected") })
     }, [])
     useEffect(() => {
         if (response[3] === currentChannel.channel.channelId) {
-            console.log(response)
+            // console.log(response)
             setMessageList(b => [...b, response])
         }
     }, [response])
