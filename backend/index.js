@@ -21,6 +21,7 @@ const ServerModel = require('./models/ServerModel')
 const ChannelModel = require('./models/ChannelModel')
 const ChatModel = require('./models/ChatModel')
 const ActiveVoiceChat = require('./models/ActiveVideoChatsModel')
+const path = require("path");
 app.use(cors({ origin: url.frontend, credentials: true }))
 app.options('*', cors())
 app.use(express.json())
@@ -357,6 +358,9 @@ app.get('/join/:id', (req, res) => {
     } else {
         res.send('Sign in boi').status(401)
     }
+})
+app.get('/*',(req,res)=>{
+    res.sendFile(path.join(__dirname, "usercontent", "index.html"));
 })
 io.on('connection', socket => {
     console.log(socket.client.conn.server.clientsCount)

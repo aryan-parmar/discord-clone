@@ -2,7 +2,6 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFile } from '@fortawesome/free-solid-svg-icons'
 import url from '../url.json'
-
 export default function ChatDisplay(props) {
     let name = props.from
     let profileImage = props.profileImage
